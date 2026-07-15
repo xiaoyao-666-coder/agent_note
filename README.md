@@ -35,16 +35,16 @@ Wrangler 配置位于 `wrangler.jsonc`，Pages 项目名为 `xiaoyao-knowledge`�
 首次创建项目：
 
 ```powershell
-npx wrangler pages project create xiaoyao-knowledge --production-branch main
+pnpm exec wrangler pages project create xiaoyao-knowledge --production-branch main
 ```
 
 直接发布：
 
 ```powershell
 pnpm build
-npx wrangler pages deploy dist --project-name xiaoyao-knowledge --branch main
+pnpm exec wrangler pages deploy dist --project-name xiaoyao-knowledge --branch main
 ```
 
 GitHub 仓库：[xiaoyao-666-coder/agent_note](https://github.com/xiaoyao-666-coder/agent_note)
 
-生产地址将在首次部署成功后写入此处。
+生产地址：[https://xiaoyao-knowledge.pages.dev/](https://xiaoyao-knowledge.pages.dev/)
