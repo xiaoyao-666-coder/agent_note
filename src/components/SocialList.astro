@@ -13,15 +13,15 @@ const socialLinks: {
 	name: string;
 }[] = [
 	{
-		friendlyName: "Github",
-		link: "https://github.com/chrismwilliams/astro-cactus",
+		friendlyName: "GitHub：xiaoyao-666-coder/agent_note",
+		link: "https://github.com/xiaoyao-666-coder/agent_note",
 		name: "mdi:github",
 	},
 ];
 ---
 
-<div class="flex flex-wrap items-end gap-x-2">
-	<p>Find me on</p>
+<div class="flex flex-wrap items-center gap-x-3">
+	<p>在 GitHub 查看本站源码</p>
 	<ul class="flex flex-1 items-center gap-x-2 sm:flex-initial">
 		{
 			socialLinks.map(({ friendlyName, isWebmention, link, name }) => (

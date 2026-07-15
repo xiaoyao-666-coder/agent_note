@@ -2,35 +2,29 @@
 import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-	description: "I'm a starter theme for Astro.build",
-	title: "About",
+	description: "关于逍遥哥的知识库，以及文章、笔记和公开内容的发布边界。",
+	title: "关于",
 };
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-12">About</h1>
+	<h1 class="title mb-12">关于</h1>
 	<div class="prose prose-sm prose-cactus max-w-none">
 		<p>
-			Hi, I’m a starter Astro. I’m particularly great for getting you started with your own blogging
-			website.
+			这里是逍遥哥的个人知识库，用来记录技术实践、项目复盘、GitHub 笔记和可以长期复用的方法。
 		</p>
-		<p>Here are my some of my awesome built in features:</p>
+		<p>内容按用途分为两类：</p>
 		<ul class="list-inside list-disc" role="list">
-			<li>I'm ultra fast as I'm a static site</li>
-			<li>I'm fully responsive</li>
-			<li>I come with a light and dark mode</li>
-			<li>I'm easy to customise and add additional content</li>
-			<li>I have Tailwind CSS styling</li>
-			<li>Shiki code syntax highlighting</li>
-			<li>Satori for auto generating OG images for blog posts</li>
+			<li>文章：完整教程、研究总结和项目复盘。</li>
+			<li>笔记：命令、片段、链接和阶段性记录。</li>
 		</ul>
 		<p>
-			Clone or fork my <a
+			本站只发布经过确认的公开内容，不会自动同步其他仓库或私人文件。源码托管在 <a
 				class="cactus-link inline-block"
-				href="https://github.com/chrismwilliams/astro-cactus"
+				href="https://github.com/xiaoyao-666-coder/agent_note"
 				rel="noreferrer"
-				target="_blank">repo</a
-			> if you like me!
+				target="_blank">GitHub</a
+			>，每次构建都会先检查常见密钥和敏感配置模式。
 		</p>
 	</div>
 </PageLayout>

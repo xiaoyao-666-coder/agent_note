@@ -12,12 +12,11 @@ if (!webMentions.length) return;
 ---
 
 <hr class="border-solid" />
-<h2 class="mb-8 before:hidden">Webmentions for this post</h2>
+<h2 class="mb-8 before:hidden">来自其他网站的回应</h2>
 <div class="space-y-10">
 	<Likes mentions={webMentions} />
 	<Comments mentions={webMentions} />
 </div>
 <p class="mt-8">
-	Responses powered by{" "}
-	<a href="https://webmention.io" rel="noreferrer" target="_blank">Webmentions</a>
+	回应功能由 <a href="https://webmention.io" rel="noreferrer" target="_blank">Webmention</a> 提供
 </p>

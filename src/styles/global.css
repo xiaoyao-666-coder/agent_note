@@ -51,6 +51,8 @@
 
 /* you could refactor below to use light-dark(), depending on your target audience */
 @theme {
+	--font-sans:
+		"Noto Sans SC", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
 	--color-global-bg: oklch(98.48% 0 0);
 	--color-global-text: oklch(26.99% 0.0096 235.05);
 	--color-muted: oklch(44.6% 0.03 256.802);
@@ -92,6 +94,20 @@
 			--color-accent var(--color-mode-transition-duration) var(--color-mode-transition-easing),
 			--color-accent-2 var(--color-mode-transition-duration) var(--color-mode-transition-easing),
 			--color-quote var(--color-mode-transition-duration) var(--color-mode-transition-easing);
+	}
+
+	body {
+		letter-spacing: 0;
+		line-height: 1.8;
+	}
+
+	code,
+	kbd,
+	pre {
+		font-family:
+			ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+			monospace;
+		letter-spacing: 0;
 	}
 
 	:target {

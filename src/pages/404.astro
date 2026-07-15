@@ -2,12 +2,13 @@
 import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-	description: "Oops! It looks like this page is lost in space!",
-	title: "Oops! You found a missing page!",
+	description: "你访问的页面不存在或已经移动。",
+	title: "页面未找到",
 };
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-12">404 | Oops something went wrong</h1>
-	<p class="mb-8">Please use the navigation to find your way back</p>
+	<h1 class="title mb-8">404｜页面未找到</h1>
+	<p class="mb-8">你访问的内容可能已经移动。请使用顶部导航继续浏览，或返回首页。</p>
+	<a class="cactus-link" href="/">返回首页</a>
 </PageLayout>

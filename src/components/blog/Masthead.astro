@@ -28,19 +28,19 @@ const {
 		</div>
 	)
 }
-{data.draft ? <span class="text-base text-red-500">(Draft)</span> : null}
+{data.draft ? <span class="text-base text-red-500">（草稿）</span> : null}
 <h1 class="title">
 	{data.title}
 </h1>
 <div class="flex flex-wrap items-center gap-x-3 gap-y-2">
 	<p class="font-semibold">
 		<FormattedDate date={data.publishDate} /> /{" "}
-		{readingTime}
+		{readingTime.replace("min read", "分钟阅读")}
 	</p>
 	{
 		data.updatedDate && (
 			<span class="bg-quote/5 text-quote rounded-lg px-2 py-1">
-				Updated:
+				更新于：
 				<FormattedDate class="ms-1" date={data.updatedDate} />
 			</span>
 		)
@@ -70,7 +70,7 @@ const {
 				<>
 					{/* prettier-ignore */}
 					<span class="contents">
-						<a class="cactus-link inline-block before:content-['#']" data-pagefind-filter={`tag:${tag}`} href={`/tags/${tag}/`}><span class="sr-only">View more blogs with the tag&nbsp;</span>{tag}
+						<a class="cactus-link inline-block before:content-['#']" data-pagefind-filter={`tag:${tag}`} href={`/tags/${tag}/`}><span class="sr-only">查看更多带有此标签的文章：</span>{tag}
 						</a>{i < data.tags.length - 1 && ", "}
 					</span>
 				</>
