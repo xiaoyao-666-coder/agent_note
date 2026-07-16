@@ -2,8 +2,18 @@
 import { type CollectionEntry, render } from "astro:content";
 
 import Masthead from "@/components/blog/Masthead.astro";
+import RelatedPosts from "@/components/blog/RelatedPosts.astro";
+import SeriesNav from "@/components/blog/SeriesNav.astro";
 import TOC from "@/components/blog/TOC.astro";
 import WebMentions from "@/components/blog/webmentions/index.astro";
+import {
+	getAdjacentInSeries,
+	getAdjacentPosts,
+	getAllPosts,
+	getPostsInSeries,
+	getRelatedPosts,
+	getSeriesMeta,
+} from "@/data/post";
 
 import BaseLayout from "./Base.astro";
 
@@ -12,11 +22,25 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { ogImage, title, description, updatedDate, publishDate } = post.data;
+const { ogImage, title, description, updatedDate, publishDate, series } = post.data;
 const socialImage = ogImage ?? `/og-image/${post.id}.png`;
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 const { headings, remarkPluginFrontmatter } = await render(post);
 const readingTime: string = remarkPluginFrontmatter.readingTime;
+
+const allPosts = await getAllPosts();
+const related = getRelatedPosts(post, allPosts, 3);
+const { prev, next } = getAdjacentPosts(post, allPosts);
+
+const seriesMeta = series ? await getSeriesMeta(series) : undefined;
+const seriesPosts = series ? getPostsInSeries(series, allPosts) : [];
+const seriesAdjacent = seriesPosts.length
+	? getAdjacentInSeries(post, seriesPosts)
+	: { prev: undefined, next: undefined };
+
+// Prefer series prev/next when available
+const navPrev = seriesAdjacent.prev ?? prev;
+const navNext = seriesAdjacent.next ?? next;
 ---
 
 <BaseLayout
@@ -28,19 +52,43 @@ const readingTime: string = remarkPluginFrontmatter.readingTime;
 	}}
 >
 	<article class="grow break-words" data-pagefind-body>
-		<div id="blog-hero" class="mb-12"><Masthead content={post} readingTime={readingTime} /></div>
-		<div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
-			{!!headings.length && <TOC headings={headings} />}
-			<div
-				class="prose prose-sm prose-headings:font-semibold prose-headings:text-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-muted prose-headings:hover:before:text-accent sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none"
-			>
-				<slot />
-				<WebMentions />
+		<div id="blog-hero" class="mb-10"><Masthead content={post} readingTime={readingTime} /></div>
+		<div class="layout-with-rail">
+			<div class="min-w-0">
+				{
+					!!headings.length && (
+						<div class="mb-8 lg:hidden">
+							<TOC headings={headings} />
+						</div>
+					)
+				}
+				<div
+					class="prose prose-sm prose-cactus max-w-none prose-headings:font-semibold prose-headings:text-[var(--color-accent-2)] prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-[var(--color-muted)] prose-headings:hover:before:text-[var(--color-accent)] sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none"
+				>
+					<slot />
+					<WebMentions />
+				</div>
+				{
+					seriesMeta && seriesPosts.length > 1 && (
+						<div class="mt-10 lg:hidden">
+							<SeriesNav seriesMeta={seriesMeta} posts={seriesPosts} currentId={post.id} />
+						</div>
+					)
+				}
+				<RelatedPosts posts={related} prev={navPrev} next={navNext} />
 			</div>
+			<aside class="layout-rail space-y-4">
+				{
+					seriesMeta && seriesPosts.length > 0 && (
+						<SeriesNav seriesMeta={seriesMeta} posts={seriesPosts} currentId={post.id} compact />
+					)
+				}
+				{!!headings.length && <TOC headings={headings} />}
+			</aside>
 		</div>
 	</article>
 	<button
-		class="hover:border-link fixed end-4 bottom-8 z-90 flex h-10 w-10 translate-y-28 cursor-pointer items-center justify-center rounded-full border-2 border-transparent bg-zinc-200 text-3xl opacity-0 transition-all transition-discrete duration-300 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 sm:end-8 sm:h-12 sm:w-12 dark:bg-zinc-700"
+		class="fixed end-4 bottom-8 z-90 flex h-10 w-10 translate-y-28 cursor-pointer items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] text-xl opacity-0 shadow-md transition-all transition-discrete duration-300 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] sm:end-8 sm:h-12 sm:w-12"
 		data-show="false"
 		id="to-top-btn"
 	>
@@ -66,7 +114,6 @@ const readingTime: string = remarkPluginFrontmatter.readingTime;
 
 	function callback(entries: IntersectionObserverEntry[]) {
 		entries.forEach((entry) => {
-			// only show the scroll to top button when the heading is out of view
 			scrollBtn.dataset.show = (!entry.isIntersecting).toString();
 		});
 	}

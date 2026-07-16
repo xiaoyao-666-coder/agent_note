@@ -15,7 +15,6 @@ export const getStaticPaths = (async ({ paginate }) => {
 
 interface Props {
 	page: Page<CollectionEntry<"note">>;
-	uniqueTags: string[];
 }
 
 const { page } = Astro.props;
@@ -43,16 +42,29 @@ const paginationProps = {
 
 <PageLayout meta={meta}>
 	<section>
-		<h1 class="title mb-12 flex items-center gap-3">
-			笔记 <a class="text-accent" href="/notes/rss.xml" target="_blank">
+		<div class="mb-4 flex flex-wrap items-center gap-3">
+			<div>
+				<div class="section-label">Notes</div>
+				<h1 class="title">笔记</h1>
+			</div>
+			<a
+				class="ms-auto inline-flex items-center gap-1 rounded-md border border-[var(--color-border)] px-2 py-1 text-[var(--color-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+				href="/notes/rss.xml"
+				target="_blank"
+			>
 				<span class="sr-only">笔记 RSS 订阅</span>
-				<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name="mdi:rss" />
+				<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:rss" />
+				<span class="text-xs font-mono">RSS</span>
 			</a>
-		</h1>
-		<ul class="mt-6 space-y-8 text-start">
+		</div>
+		<p class="mb-8 text-[var(--color-muted)]">
+			命令、片段与阶段性记录。完整结论请看
+			<a class="cactus-link" href="/posts/">文章</a>。
+		</p>
+		<ul class="space-y-4 text-start" role="list">
 			{
 				page.data.map((note) => (
-					<li class="">
+					<li>
 						<Note note={note} as="h2" isPreview />
 					</li>
 				))

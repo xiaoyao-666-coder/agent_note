@@ -1,0 +1,97 @@
+---
+import type { GetStaticPaths } from "astro";
+import { Icon } from "astro-icon/components";
+import FormattedDate from "@/components/FormattedDate.astro";
+import {
+	getAllPosts,
+	getPostsInSeries,
+	getSeriesMeta,
+	getSeriesWithCount,
+	seriesPath,
+} from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+
+export const getStaticPaths = (async () => {
+	const { getCollection } = await import("astro:content");
+	const allPosts = await getAllPosts();
+	const ids = getSeriesWithCount(allPosts).map(([id]) => id);
+	const declared = await getCollection("series");
+	const allIds = new Set([...ids, ...declared.map((s) => s.id)]);
+	return [...allIds].map((series) => ({ params: { series } }));
+}) satisfies GetStaticPaths;
+
+const seriesId = Astro.params.series as string;
+const allPosts = await getAllPosts();
+const posts = getPostsInSeries(seriesId, allPosts);
+const seriesMeta = await getSeriesMeta(seriesId);
+
+const meta = {
+	description: seriesMeta?.data.description ?? `系列「${seriesId}」的文章目录。`,
+	title: seriesMeta?.data.title ?? seriesId,
+};
+---
+
+<PageLayout meta={meta}>
+	<nav class="mb-6" aria-label="面包屑导航">
+		<ul class="meta-row text-sm">
+			<li>
+				<a class="cactus-link" href="/series/">系列</a>
+			</li>
+			<li aria-hidden="true" class="text-[var(--color-border)]">
+				<Icon name="mdi:chevron-right" class="inline h-4 w-4" />
+			</li>
+			<li aria-current="page">{seriesMeta?.data.title ?? seriesId}</li>
+		</ul>
+	</nav>
+	<div class="section-label">Series Catalog</div>
+	<h1 class="title mb-2">{seriesMeta?.data.title ?? seriesId}</h1>
+	{
+		seriesMeta?.data.description && (
+			<p class="mb-2 max-w-prose text-[var(--color-muted)]">{seriesMeta.data.description}</p>
+		)
+	}
+	<p class="mb-8 font-mono text-xs text-[var(--color-muted)]">{posts.length} 篇文章 · 建议按顺序阅读</p>
+
+	{
+		posts.length === 0 ? (
+			<p class="text-[var(--color-muted)]">该系列暂无文章。</p>
+		) : (
+			<ol class="space-y-3" role="list">
+				{posts.map((post, i) => (
+					<li>
+						<a class="post-card flex gap-4" href={`/posts/${post.id}/`}>
+							<span class="font-mono text-sm font-semibold text-[var(--color-accent)]">
+								{String(i + 1).padStart(2, "0")}
+							</span>
+							<span class="min-w-0 flex-1">
+								<span class="block font-semibold text-[var(--color-accent-2)]">{post.data.title}</span>
+								{post.data.description && (
+									<span class="mt-1 block line-clamp-2 text-sm text-[var(--color-muted)]">
+										{post.data.description}
+									</span>
+								)}
+								<span class="meta-row mt-2">
+									<span class="chip chip-accent">{post.data.category}</span>
+									<FormattedDate class="font-mono text-xs" date={post.data.publishDate} />
+								</span>
+							</span>
+						</a>
+					</li>
+				))}
+			</ol>
+		)
+	}
+
+	{
+		posts.length > 0 && (
+			<p class="mt-8">
+				<a class="chip chip-accent" href={`/posts/${posts[0].id}/`}>
+					从第一篇开始阅读 →
+				</a>
+				<a class="chip ms-2" href={seriesPath(seriesId)}>
+					本页
+				</a>
+			</p>
+		)
+	}
+</PageLayout>

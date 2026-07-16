@@ -1,0 +1,85 @@
+---
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import { Icon } from "astro-icon/components";
+import PostPreview from "@/components/blog/PostPreview.astro";
+import Pagination from "@/components/Paginator.astro";
+import {
+	getAllPosts,
+	getCategoryMeta,
+	getUniqueCategoriesWithCount,
+} from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+
+export const getStaticPaths = (async ({ paginate }) => {
+	const allPosts = await getAllPosts();
+	const sorted = allPosts.sort(collectionDateSort);
+	const categories = getUniqueCategoriesWithCount(sorted).map(([name]) => name);
+
+	return categories.flatMap((category) => {
+		const posts = sorted.filter((p) => p.data.category === category);
+		return paginate(posts, {
+			pageSize: 10,
+			params: { category },
+		});
+	});
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page } = Astro.props as Props;
+const category = Astro.params.category as string;
+const categoryMeta = await getCategoryMeta(category);
+
+const meta = {
+	description: categoryMeta?.data.description ?? `分类「${category}」下的全部文章。`,
+	title: categoryMeta?.data.title ?? category,
+};
+
+const paginationProps = {
+	...(page.url.prev && {
+		prevUrl: {
+			text: "← 上一页",
+			url: page.url.prev,
+		},
+	}),
+	...(page.url.next && {
+		nextUrl: {
+			text: "下一页 →",
+			url: page.url.next,
+		},
+	}),
+};
+---
+
+<PageLayout meta={meta}>
+	<nav class="mb-6" aria-label="面包屑导航">
+		<ul class="meta-row text-sm">
+			<li>
+				<a class="cactus-link" href="/categories/">分类</a>
+			</li>
+			<li aria-hidden="true" class="text-[var(--color-border)]">
+				<Icon name="mdi:chevron-right" class="inline h-4 w-4" />
+			</li>
+			<li aria-current="page">{categoryMeta?.data.title ?? category}</li>
+		</ul>
+	</nav>
+	<div class="section-label">Category</div>
+	<h1 class="title mb-2">{categoryMeta?.data.title ?? category}</h1>
+	{
+		categoryMeta?.data.description && (
+			<p class="mb-8 text-[var(--color-muted)]">{categoryMeta.data.description}</p>
+		)
+	}
+	<p class="mb-6 font-mono text-xs text-[var(--color-muted)]">{page.data.length} 篇文章（本页）</p>
+	<ul class="space-y-3" role="list">
+		{
+			page.data.map((p) => (
+				<li class="panel-soft px-4 py-3">
+					<PostPreview as="h2" post={p} withDesc />
+				</li>
+			))
+		}
+	</ul>
+	<Pagination {...paginationProps} />
+</PageLayout>

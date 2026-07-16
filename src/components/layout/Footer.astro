@@ -4,20 +4,24 @@ import { menuLinks, siteConfig } from "@/site.config";
 const year = new Date().getFullYear();
 ---
 
-<footer
-	class="text-muted mt-auto flex w-full flex-col items-center justify-center gap-y-2 pt-20 pb-4 text-center align-top font-semibold sm:flex-row sm:justify-between sm:text-xs"
->
-	<div class="me-0 sm:me-4">
-		&copy; {siteConfig.author}
-		{year}.<span class="inline-block">&nbsp;·&nbsp;{siteConfig.title}</span>
+<footer class="site-footer flex w-full flex-col items-center justify-center gap-y-3 text-center sm:flex-row sm:justify-between sm:text-start">
+	<div>
+		<span class="font-mono text-[0.7rem] tracking-wider text-[var(--color-accent)]">KNOWLEDGE BASE</span>
+		<p class="mt-1">
+			&copy; {siteConfig.author}
+			{year}
+			<span class="text-[var(--color-border)]"> · </span>
+			{siteConfig.title}
+		</p>
 	</div>
-	<nav aria-label="页脚导航" class="sm:divide-muted flex gap-x-2 sm:gap-x-0 sm:divide-x">
+	<nav aria-label="页脚导航" class="flex flex-wrap justify-center gap-1 sm:justify-end">
 		{
 			menuLinks.map((link) => (
-				<a class="hover:text-global-text px-4 py-2 hover:underline sm:py-0" href={link.path}>
+				<a class="nav-link" href={link.path}>
 					{link.title}
 				</a>
 			))
 		}
+		<a class="nav-link" href="/rss.xml">RSS</a>
 	</nav>
 </footer>

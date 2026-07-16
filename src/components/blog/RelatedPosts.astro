@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PostPreview from "@/components/blog/PostPreview.astro";
+
+interface Props {
+	posts: CollectionEntry<"post">[];
+	prev?: CollectionEntry<"post"> | undefined;
+	next?: CollectionEntry<"post"> | undefined;
+}
+
+const { posts, prev, next } = Astro.props;
+---
+
+{
+	(posts.length > 0 || prev || next) && (
+		<section class="mt-14 border-t border-[var(--color-border)] pt-10">
+			{(prev || next) && (
+				<nav aria-label="相邻文章" class="mb-10 grid gap-3 sm:grid-cols-2">
+					{prev ? (
+						<a class="post-card" href={`/posts/${prev.id}/`}>
+							<span class="section-label mb-1">上一篇</span>
+							<span class="block font-medium text-[var(--color-accent-2)]">{prev.data.title}</span>
+						</a>
+					) : (
+						<div />
+					)}
+					{next ? (
+						<a class="post-card text-end sm:text-end" href={`/posts/${next.id}/`}>
+							<span class="section-label mb-1 sm:justify-end">下一篇</span>
+							<span class="block font-medium text-[var(--color-accent-2)]">{next.data.title}</span>
+						</a>
+					) : null}
+				</nav>
+			)}
+			{posts.length > 0 && (
+				<>
+					<div class="section-label">相关文章</div>
+					<h2 class="title mb-4 text-lg">你可能还想看</h2>
+					<ul class="grid gap-3 sm:grid-cols-1" role="list">
+						{posts.map((post) => (
+							<li>
+								<PostPreview post={post} variant="card" withDesc />
+							</li>
+						))}
+					</ul>
+				</>
+			)}
+		</section>
+	)
+}

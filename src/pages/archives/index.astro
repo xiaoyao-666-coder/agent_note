@@ -1,0 +1,86 @@
+---
+import FormattedDate from "@/components/FormattedDate.astro";
+import { getAllNotes, getAllPosts, groupByYearMonth } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+
+const posts = (await getAllPosts()).sort(collectionDateSort);
+const notes = (await getAllNotes()).sort(collectionDateSort);
+
+type ArchiveItem = {
+	kind: "post" | "note";
+	id: string;
+	title: string;
+	href: string;
+	category?: string;
+	publishDate: Date;
+};
+
+const items: ArchiveItem[] = [
+	...posts.map((p) => ({
+		kind: "post" as const,
+		id: p.id,
+		title: p.data.title,
+		href: `/posts/${p.id}/`,
+		category: p.data.category,
+		publishDate: p.data.publishDate,
+	})),
+	...notes.map((n) => ({
+		kind: "note" as const,
+		id: n.id,
+		title: n.data.title,
+		href: `/notes/${n.id}/`,
+		category: n.data.category,
+		publishDate: n.data.publishDate,
+	})),
+].sort((a, b) => b.publishDate.getTime() - a.publishDate.getTime());
+
+const groups = groupByYearMonth(items);
+
+const meta = {
+	description: "按时间顺序浏览全部文章与笔记。",
+	title: "归档",
+};
+
+function formatMonthLabel(key: string) {
+	const [y, m] = key.split("-");
+	return `${y} 年 ${Number(m)} 月`;
+}
+---
+
+<PageLayout meta={meta}>
+	<div class="section-label">Archives</div>
+	<h1 class="title mb-3">归档</h1>
+	<p class="mb-8 text-[var(--color-muted)]">
+		共 <span class="font-mono text-[var(--color-accent-2)]">{items.length}</span> 条内容（
+		{posts.length} 篇文章 · {notes.length} 条笔记）。按主题浏览请使用
+		<a class="cactus-link" href="/categories/">分类</a>。
+	</p>
+	{
+		groups.map(([key, list]) => (
+			<section class="mb-10">
+				<h2 class="archive-year">{formatMonthLabel(key)}</h2>
+				<ul class="panel-soft px-4 py-2" role="list">
+					{list.map((item) => (
+						<li class="timeline-item">
+							<FormattedDate
+								class="font-mono text-xs text-[var(--color-muted)]"
+								date={item.publishDate}
+								dateTimeOptions={{ month: "2-digit", day: "2-digit" }}
+							/>
+							<div class="min-w-0">
+								<a class="cactus-link font-medium text-[var(--color-accent-2)] no-underline hover:underline" href={item.href}>
+									{item.title}
+								</a>
+								<div class="meta-row mt-0.5">
+									<span class="chip">{item.kind === "post" ? "文章" : "笔记"}</span>
+									{item.category && <span class="chip chip-accent">{item.category}</span>}
+								</div>
+							</div>
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+</PageLayout>

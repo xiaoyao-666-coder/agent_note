@@ -69,7 +69,13 @@ export async function scanPublicContent(contentRoots) {
 }
 
 async function main() {
-	const roots = ["content/posts", "content/notes", "content/tags"];
+	const roots = [
+		"content/posts",
+		"content/notes",
+		"content/tags",
+		"content/categories",
+		"content/series",
+	];
 	const findings = await scanPublicContent(roots);
 
 	if (findings.length === 0) {

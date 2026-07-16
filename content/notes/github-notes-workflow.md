@@ -2,6 +2,10 @@
 title: GitHub 笔记发布流程
 description: 从本地 Markdown 到 GitHub 和 Cloudflare 的安全发布步骤。
 publishDate: "2026-07-15T10:00:00+08:00"
+category: 建站
+tags:
+  - github
+  - 发布流程
 ---
 
 新的公开笔记放入 `content/notes/`，完整文章放入 `content/posts/`。

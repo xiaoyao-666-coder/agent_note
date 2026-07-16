@@ -8,7 +8,16 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-8">404｜页面未找到</h1>
-	<p class="mb-8">你访问的内容可能已经移动。请使用顶部导航继续浏览，或返回首页。</p>
-	<a class="cactus-link" href="/">返回首页</a>
+	<div class="hero-panel text-center">
+		<p class="font-mono text-sm text-[var(--color-accent)]">ERROR 404</p>
+		<h1 class="title mt-2 mb-4">页面未找到</h1>
+		<p class="mb-6 text-[var(--color-muted)]">
+			你访问的内容可能已经移动。请使用顶部导航继续浏览，或返回首页。
+		</p>
+		<div class="flex flex-wrap justify-center gap-2">
+			<a class="chip chip-accent" href="/">返回首页</a>
+			<a class="chip" href="/posts/">文章</a>
+			<a class="chip" href="/archives/">归档</a>
+		</div>
+	</div>
 </PageLayout>

@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import {
+	categoryPath,
+	getAllPosts,
+	getUniqueCategoriesWithCount,
+} from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+
+const allPosts = await getAllPosts();
+const counts = new Map(getUniqueCategoriesWithCount(allPosts));
+const metaEntries = await getCollection("category");
+
+// Merge declared categories with any categories used on posts
+const names = new Set([...counts.keys(), ...metaEntries.map((c) => c.id)]);
+const rows = [...names].map((name) => {
+	const meta = metaEntries.find((c) => c.id === name);
+	return {
+		name,
+		title: meta?.data.title ?? name,
+		description: meta?.data.description ?? "",
+		order: meta?.data.order ?? 99,
+		count: counts.get(name) ?? 0,
+	};
+});
+rows.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, "zh-CN"));
+
+const meta = {
+	description: "按一级主题浏览知识库文章，分类边界清晰、数量精简。",
+	title: "分类",
+};
+---
+
+<PageLayout meta={meta}>
+	<div class="section-label">Categories</div>
+	<h1 class="title mb-3">分类</h1>
+	<p class="mb-8 max-w-prose text-[var(--color-muted)]">
+		分类是内容的一级主题，用于导航与归档。细粒度关键词请使用
+		<a class="cactus-link" href="/tags/">标签</a>；按时间浏览请使用
+		<a class="cactus-link" href="/archives/">归档</a>。
+	</p>
+	<ul class="grid gap-4 sm:grid-cols-2" role="list">
+		{
+			rows.map((row) => (
+				<li>
+					<a class="post-card h-full" href={categoryPath(row.name)}>
+						<div class="flex items-start justify-between gap-2">
+							<span class="text-lg font-semibold text-[var(--color-accent-2)]">{row.title}</span>
+							<span class="font-mono text-xs text-[var(--color-muted)]">{row.count} 篇</span>
+						</div>
+						{row.description && (
+							<p class="mt-2 text-sm text-[var(--color-muted)]">{row.description}</p>
+						)}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</PageLayout>

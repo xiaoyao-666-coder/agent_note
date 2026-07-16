@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import {
+	getAllPosts,
+	getPostsInSeries,
+	getSeriesWithCount,
+	seriesPath,
+} from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+
+const allPosts = await getAllPosts();
+const counts = new Map(getSeriesWithCount(allPosts));
+const metaEntries = await getCollection("series");
+
+const names = new Set([...counts.keys(), ...metaEntries.map((s) => s.id)]);
+const rows = [...names]
+	.map((id) => {
+		const meta = metaEntries.find((s) => s.id === id);
+		const posts = getPostsInSeries(id, allPosts);
+		return {
+			id,
+			title: meta?.data.title ?? id,
+			description: meta?.data.description ?? "",
+			order: meta?.data.order ?? 99,
+			count: counts.get(id) ?? posts.length,
+			firstHref: posts[0] ? `/posts/${posts[0].id}/` : seriesPath(id),
+		};
+	})
+	.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title, "zh-CN"));
+
+const meta = {
+	description: "按阅读顺序组织的专题系列，适合系统学习某一主题。",
+	title: "系列",
+};
+---
+
+<PageLayout meta={meta}>
+	<div class="section-label">Series</div>
+	<h1 class="title mb-3">系列</h1>
+	<p class="mb-8 max-w-prose text-[var(--color-muted)]">
+		系列把多篇文章排成固定阅读顺序。单篇主题仍可用
+		<a class="cactus-link" href="/categories/">分类</a> 与
+		<a class="cactus-link" href="/tags/">标签</a> 检索。
+	</p>
+	{
+		rows.length === 0 ? (
+			<p class="text-[var(--color-muted)]">暂无系列。在文章 frontmatter 中设置 series 即可出现。</p>
+		) : (
+			<ul class="grid gap-4 sm:grid-cols-2" role="list">
+				{rows.map((row) => (
+					<li>
+						<a class="post-card h-full" href={seriesPath(row.id)}>
+							<div class="flex items-start justify-between gap-2">
+								<span class="text-lg font-semibold text-[var(--color-accent-2)]">{row.title}</span>
+								<span class="font-mono text-xs text-[var(--color-muted)]">{row.count} 篇</span>
+							</div>
+							{row.description && (
+								<p class="mt-2 text-sm text-[var(--color-muted)]">{row.description}</p>
+							)}
+							<span class="meta-row mt-3 text-xs text-[var(--color-accent)]">查看目录 →</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		)
+	}
+</PageLayout>
