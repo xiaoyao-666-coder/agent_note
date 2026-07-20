@@ -74,9 +74,7 @@ export function getUniqueTagsWithCount(posts: CollectionEntry<"post">[]): [strin
 }
 
 /** unique categories with counts from posts */
-export function getUniqueCategoriesWithCount(
-	posts: CollectionEntry<"post">[],
-): [string, number][] {
+export function getUniqueCategoriesWithCount(posts: CollectionEntry<"post">[]): [string, number][] {
 	const map = new Map<string, number>();
 	for (const post of posts) {
 		const cat = post.data.category;
@@ -136,8 +134,7 @@ export function getRelatedPosts(
 		.filter((s) => s.score > 0)
 		.sort(
 			(a, b) =>
-				b.score - a.score ||
-				b.post.data.publishDate.getTime() - a.post.data.publishDate.getTime(),
+				b.score - a.score || b.post.data.publishDate.getTime() - a.post.data.publishDate.getTime(),
 		)
 		.slice(0, limit)
 		.map((s) => s.post);

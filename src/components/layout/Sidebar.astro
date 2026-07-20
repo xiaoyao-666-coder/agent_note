@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import {
 	categoryPath,
 	getAllPosts,
@@ -7,7 +8,6 @@ import {
 	getUniqueTagsWithCount,
 	seriesPath,
 } from "@/data/post";
-import { getCollection } from "astro:content";
 
 const allPosts = await getAllPosts();
 const categories = getUniqueCategoriesWithCount(allPosts).slice(0, 8);

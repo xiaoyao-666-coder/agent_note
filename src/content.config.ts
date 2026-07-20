@@ -49,9 +49,7 @@ const note = defineCollection({
 		description: z.string().optional(),
 		category: z.string().default("速记"),
 		tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
-		publishDate: z.iso
-			.datetime({ offset: true })
-			.transform((val) => new Date(val)),
+		publishDate: z.iso.datetime({ offset: true }).transform((val) => new Date(val)),
 	}),
 });
 

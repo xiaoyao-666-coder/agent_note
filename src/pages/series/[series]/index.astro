@@ -23,6 +23,7 @@ export const getStaticPaths = (async () => {
 const seriesId = Astro.params.series as string;
 const allPosts = await getAllPosts();
 const posts = getPostsInSeries(seriesId, allPosts);
+const firstPost = posts[0];
 const seriesMeta = await getSeriesMeta(seriesId);
 
 const meta = {
@@ -83,9 +84,9 @@ const meta = {
 	}
 
 	{
-		posts.length > 0 && (
+		firstPost && (
 			<p class="mt-8">
-				<a class="chip chip-accent" href={`/posts/${posts[0].id}/`}>
+				<a class="chip chip-accent" href={`/posts/${firstPost.id}/`}>
 					从第一篇开始阅读 →
 				</a>
 				<a class="chip ms-2" href={seriesPath(seriesId)}>
