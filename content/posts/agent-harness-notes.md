@@ -10,9 +10,8 @@ tags:
   - AI Agent
 ---
 
-# 《御舆：解码 Agent Harness》详细学习笔记
-
-> 来源：[lintsinghua.github.io](https://lintsinghua.github.io) 及其公开仓库 [lintsinghua/claude-code-book](https://github.com/lintsinghua/claude-code-book)。  
+> 来源：[lintsinghua.github.io](https://lintsinghua.github.io) 及其公开仓库 [lintsinghua/claude-code-book](https://github.com/lintsinghua/claude-code-book)。
+>
 > 本笔记是对全书 15 章和 4 个附录的结构化转述，并补充跨章节理解，不是原文复制。
 
 ## 0. 阅读边界
