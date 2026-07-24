@@ -5,7 +5,7 @@ export const siteConfig: SiteConfig = {
 	url: "https://xiaoyao-knowledge.pages.dev/",
 	title: "逍遥哥的知识库",
 	author: "逍遥哥",
-	description: "记录技术实践、项目复盘、GitHub 笔记与长期可复用的知识。",
+	description: "整理人工智能、工程实践、知识管理与建站过程中的长期可复用知识。",
 	lang: "zh-CN",
 	ogLocale: "zh_CN",
 	showLogo: true,
@@ -25,24 +25,16 @@ export const menuLinks: { path: string; title: string }[] = [
 		title: "首页",
 	},
 	{
+		path: "/knowledge/",
+		title: "知识索引",
+	},
+	{
 		path: "/posts/",
 		title: "文章",
 	},
 	{
 		path: "/notes/",
 		title: "笔记",
-	},
-	{
-		path: "/categories/",
-		title: "分类",
-	},
-	{
-		path: "/tags/",
-		title: "标签",
-	},
-	{
-		path: "/series/",
-		title: "系列",
 	},
 	{
 		path: "/archives/",

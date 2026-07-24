@@ -2,7 +2,7 @@
 import PageLayout from "@/layouts/Base.astro";
 
 const meta = {
-	description: "关于逍遥哥的知识库，以及文章、笔记、分类与公开内容的发布边界。",
+	description: "关于逍遥哥的知识库、统一知识索引和公开内容的组织与发布边界。",
 	title: "关于",
 };
 ---
@@ -12,13 +12,18 @@ const meta = {
 	<h1 class="title mb-6">关于</h1>
 	<div class="panel prose prose-sm prose-cactus max-w-none p-5 sm:p-6">
 		<p>
-			这里是逍遥哥的个人知识库，用来记录技术实践、项目复盘、GitHub 笔记和可以长期复用的方法。
+			这里是逍遥哥的个人知识库，用来整理人工智能学习、工程实践、知识管理与建站过程中可以长期复用的方法。
+		</p>
+		<p>
+			当前内容以人工智能学习笔记为主，同时记录工程实践、知识管理与建站过程。所有公开内容通过
+			<a class="cactus-link" href="/knowledge/">知识索引</a> 汇总。
 		</p>
 		<p>内容按用途与主题分层：</p>
 		<ul>
+			<li><strong>知识索引</strong>：统一汇总系列、分类、独立文章、短笔记和热门标签。</li>
 			<li><strong>文章</strong>：完整教程、研究总结和项目复盘。</li>
 			<li><strong>笔记</strong>：命令、片段、链接和阶段性记录。</li>
-			<li><strong>分类</strong>：一级主题导航（建站 / 知识管理 / 工程实践等）。</li>
+			<li><strong>分类</strong>：一级主题导航（人工智能 / 工程实践 / 知识管理 / 建站）。</li>
 			<li><strong>系列</strong>：多篇文章的固定阅读顺序与目录页。</li>
 			<li><strong>标签</strong>：细粒度关键词，便于交叉检索。</li>
 			<li><strong>归档</strong>：按时间回看全部产出。</li>
@@ -32,8 +37,6 @@ const meta = {
 				target="_blank">GitHub</a
 			>，每次构建都会先检查常见密钥和敏感配置模式。
 		</p>
-		<p>
-			视觉上采用克制的科技风：浅网格与青蓝强调色服务信息层级，正文与可读性优先。
-		</p>
+		<p>视觉上采用克制的科技风：浅网格与青蓝强调色服务信息层级，正文与可读性优先。</p>
 	</div>
 </PageLayout>

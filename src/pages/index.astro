@@ -63,13 +63,13 @@ const seriesRows = seriesCounts
 	<section class="hero-panel relative z-0">
 		<div class="section-label">Personal Knowledge Base</div>
 		<h1 class="title relative z-[1] text-2xl sm:text-3xl">逍遥哥的知识库</h1>
-		<p class="relative z-[1] mt-3 max-w-2xl text-[var(--color-muted)] leading-relaxed">
-			记录技术实践、项目复盘与可复用方法。文章沉淀完整结论，笔记保留速记原材料；用分类导航主题，用系列串起阅读路径，用标签交叉检索，用归档按时间回看。
+		<p class="relative z-[1] mt-3 max-w-2xl leading-relaxed text-[var(--color-muted)]">
+			围绕人工智能、工程实践、知识管理与建站持续整理。知识索引汇总阅读路径与主题入口，文章沉淀完整结论，笔记保留可快速查找的命令和阶段记录。
 		</p>
 		<div class="relative z-[1] mt-5 flex flex-wrap gap-2">
-			<a class="chip chip-accent" href="/posts/">浏览文章</a>
+			<a class="chip chip-accent" href="/knowledge/">打开知识索引</a>
 			<a class="chip" href="/series/">系列目录</a>
-			<a class="chip" href="/categories/">按分类</a>
+			<a class="chip" href="/posts/">全部文章</a>
 			<a class="chip" href="/archives/">时间归档</a>
 		</div>
 		<SocialList />
@@ -103,7 +103,7 @@ const seriesRows = seriesCounts
 					<section>
 						<div class="section-label">Series</div>
 						<div class="mb-4 flex items-end justify-between gap-3">
-							<h2 class="title text-xl">精选系列</h2>
+							<h2 class="title text-xl">学习路径</h2>
 							<a class="text-sm text-[var(--color-accent)] hover:underline" href="/series/">
 								全部系列 →
 							</a>
@@ -114,7 +114,9 @@ const seriesRows = seriesCounts
 									<a class="post-card h-full" href={seriesPath(row.id)}>
 										<span class="font-semibold text-[var(--color-accent-2)]">{row.title}</span>
 										{row.description && (
-											<p class="mt-1 line-clamp-2 text-xs text-[var(--color-muted)]">{row.description}</p>
+											<p class="mt-1 line-clamp-2 text-xs text-[var(--color-muted)]">
+												{row.description}
+											</p>
 										)}
 										<span class="meta-row mt-3 font-mono text-xs">{row.count} 篇 · 按序阅读</span>
 									</a>
@@ -177,7 +179,8 @@ const seriesRows = seriesCounts
 				<div class="section-label">Latest</div>
 				<div class="mb-4 flex items-end justify-between gap-3">
 					<h2 class="title text-xl">最新文章</h2>
-					<a class="text-sm text-[var(--color-accent)] hover:underline" href="/posts/">全部文章 →</a>
+					<a class="text-sm text-[var(--color-accent)] hover:underline" href="/posts/">全部文章 →</a
+					>
 				</div>
 				<ul class="space-y-4" role="list">
 					{
