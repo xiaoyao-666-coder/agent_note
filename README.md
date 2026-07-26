@@ -72,19 +72,19 @@ pnpm build
 
 Wrangler 配置位于 `wrangler.jsonc`，Pages 项目名为 `xiaoyao-knowledge`。
 
-当前 GitHub 默认分支为 `feature/astro-cactus-blog`，下面的生产分支参数与仓库实际状态保持一致。后续若迁移到 `main`，需要同时修改 GitHub 默认分支、Cloudflare Pages 设置和此处命令。
+当前代码在 GitHub 的 `feature/astro-cactus-blog` 分支维护，但 Cloudflare Pages 采用直接上传模式，生产分支配置为 `main`。`--branch` 指定的是 Cloudflare 部署环境，不是本地当前 Git 分支；正式发布必须使用 `main`。
 
 首次创建项目：
 
 ```powershell
-pnpm exec wrangler pages project create xiaoyao-knowledge --production-branch feature/astro-cactus-blog
+pnpm exec wrangler pages project create xiaoyao-knowledge --production-branch main
 ```
 
 直接发布：
 
 ```powershell
 pnpm build
-pnpm exec wrangler pages deploy dist --project-name xiaoyao-knowledge --branch feature/astro-cactus-blog
+pnpm exec wrangler pages deploy dist --project-name xiaoyao-knowledge --branch main
 ```
 
 生产构建会生成静态页面、RSS、站点地图、OG 图片和 Pagefind 中文全文搜索索引。
