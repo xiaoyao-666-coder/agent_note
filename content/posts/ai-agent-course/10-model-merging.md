@@ -18,17 +18,17 @@ seriesOrder: 10
 
 ## 1. 基本思想：任务向量
 
-设基础模型参数为 \(\theta_0\)，在任务 A 上微调得到 \(\theta_A\)。任务向量定义为：
+设基础模型参数为 $\theta_0$，在任务 A 上微调得到 $\theta_A$。任务向量定义为：
 
-\[
+$$
 \tau_A = \theta_A - \theta_0.
-\]
+$$
 
 若有多个任务向量，可以直接组合：
 
-\[
-\theta_{merge}=\theta_0+\alpha\tau_A+\beta\tau_B.
-\]
+$$
+\theta_{\mathrm{merge}} = \theta_0 + \alpha \tau_A + \beta \tau_B.
+$$
 
 整个过程不需要访问原始训练数据，也不需要重新进行完整训练。合并的直觉是：微调增量记录了模型为某个任务学到的方向，组合这些方向就可能得到多能力模型。
 

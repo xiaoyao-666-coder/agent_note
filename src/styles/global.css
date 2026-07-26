@@ -3,6 +3,7 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/preflight.css" layer(base);
 @import "tailwindcss/utilities.css" layer(utilities);
+@import "katex/dist/katex.min.css";
 
 /* tailwind to ignore satori generated og-image */
 @source not "../pages/og-image";
@@ -11,6 +12,12 @@
 
 /* use a selector-based strategy for dark mode */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+.katex-display {
+	overflow-x: auto;
+	overflow-y: hidden;
+	padding-block: 0.25rem;
+}
 
 /* register custom colour properties */
 @property --color-global-bg {
