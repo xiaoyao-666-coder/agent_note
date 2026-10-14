@@ -1,12 +1,12 @@
 ---
-import { getAllPosts, getUniqueTagsWithCount } from "@/data/post";
+import { getAllContent, getUniqueTagsWithCount } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 
-const allPosts = await getAllPosts();
+const allPosts = await getAllContent();
 const allTags = getUniqueTagsWithCount(allPosts);
 
 const meta = {
-	description: "按关键词交叉检索文章；主题导航请使用分类。",
+	description: "按关键词交叉检索文章与笔记；主题导航请使用分类。",
 	title: "标签",
 };
 ---
@@ -25,7 +25,7 @@ const meta = {
 			<ul class="flex flex-wrap gap-2" role="list">
 				{allTags.map(([tag, val]) => (
 					<li>
-						<a class="chip" href={`/tags/${tag}/`} title={`查看标签「${tag}」下的文章`}>
+						<a class="chip" href={`/tags/${encodeURIComponent(tag)}/`} title={`查看标签「${tag}」下的文章与笔记`}>
 							#{tag}
 							<span class="font-mono opacity-60">{val}</span>
 						</a>

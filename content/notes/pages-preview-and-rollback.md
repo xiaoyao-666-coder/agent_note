@@ -25,4 +25,4 @@ tags:
 - 文档类改动与样式大改尽量分开发布，方便定位问题。
 - 若线上异常，优先回滚到上一已知良好构建，再在预览环境复现。
 
-与 [Cloudflare Pages 发布检查清单](/posts/cloudflare-pages-checklist/) 搭配使用：清单管「发之前」，本文管「发之后」。
+与 [Cloudflare Pages 发布检查清单](/notes/cloudflare-pages-checklist/) 搭配使用：清单管「发之前」，本文管「发之后」。

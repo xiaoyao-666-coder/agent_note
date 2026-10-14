@@ -1,21 +1,21 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { seriesPath } from "@/data/post";
+import { type ContentEntry, contentPath, seriesPath } from "@/data/post";
 
 interface Props {
 	seriesMeta: CollectionEntry<"series">;
-	posts: CollectionEntry<"post">[];
-	currentId?: string;
+	posts: ContentEntry[];
+	currentPath?: string;
 	/** compact for article rail */
 	compact?: boolean;
 }
 
-const { seriesMeta, posts, currentId, compact = false } = Astro.props;
+const { seriesMeta, posts, currentPath, compact = false } = Astro.props;
 const total = posts.length;
-const currentIndex = currentId ? posts.findIndex((p) => p.id === currentId) : -1;
+const currentIndex = currentPath ? posts.findIndex((p) => contentPath(p) === currentPath) : -1;
 ---
 
-<aside class:list={["panel", compact ? "p-3" : "p-4", "series-nav"]}>
+<aside class:list={["panel", compact ? "p-3" : "p-4", "series-nav"]} data-pagefind-ignore>
 	<div class="section-label mb-1">Series</div>
 	<a
 		class="mb-1 block text-sm font-semibold text-[var(--color-accent-2)] no-underline hover:text-[var(--color-accent)]"
@@ -34,13 +34,13 @@ const currentIndex = currentId ? posts.findIndex((p) => p.id === currentId) : -1
 	<ol>
 		{
 			posts.map((post) => {
-				const isCurrent = post.id === currentId;
+				const isCurrent = contentPath(post) === currentPath;
 				return (
 					<li data-current={isCurrent ? "true" : "false"}>
 						{isCurrent ? (
-							<span>{post.data.title}</span>
+							<span aria-current="page">{post.data.title}</span>
 						) : (
-							<a href={`/posts/${post.id}/`}>{post.data.title}</a>
+							<a href={contentPath(post)}>{post.data.title}</a>
 						)}
 					</li>
 				);

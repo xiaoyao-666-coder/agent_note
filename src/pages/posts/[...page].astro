@@ -69,7 +69,8 @@ const descYearKeys = Object.keys(groupedByYear).sort((a, b) => +b - +a);
 		</a>
 	</div>
 	<p class="mb-8 max-w-2xl text-[var(--color-muted)]">
-		完整教程、项目复盘与经过整理的技术总结。可按
+		知识库介绍、有完整论述的方法总结和项目复盘。课程学习、读书记录、速查与清单请到
+		<a class="cactus-link" href="/notes/">笔记</a> 查看。全部内容可按
 		<a class="cactus-link" href="/categories/">分类</a>、
 		<a class="cactus-link" href="/series/">系列</a>、
 		<a class="cactus-link" href="/tags/">标签</a> 或
@@ -92,6 +93,7 @@ const descYearKeys = Object.keys(groupedByYear).sort((a, b) => +b - +a);
 					</section>
 				)
 			}
+			<h2 class="title mb-4 text-lg">全部文章（{page.total} 篇）</h2>
 			{
 				descYearKeys.map((yearKey) => (
 					<section class="mb-12">

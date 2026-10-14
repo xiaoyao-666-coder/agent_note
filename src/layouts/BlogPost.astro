@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, render } from "astro:content";
+import { render } from "astro:content";
 
 import Masthead from "@/components/blog/Masthead.astro";
 import RelatedPosts from "@/components/blog/RelatedPosts.astro";
@@ -7,9 +7,12 @@ import SeriesNav from "@/components/blog/SeriesNav.astro";
 import TOC from "@/components/blog/TOC.astro";
 import WebMentions from "@/components/blog/webmentions/index.astro";
 import {
+	type ContentEntry,
+	contentImageSlug,
+	contentPath,
 	getAdjacentInSeries,
 	getAdjacentPosts,
-	getAllPosts,
+	getAllContent,
 	getPostsInSeries,
 	getRelatedPosts,
 	getSeriesMeta,
@@ -18,19 +21,22 @@ import {
 import BaseLayout from "./Base.astro";
 
 interface Props {
-	post: CollectionEntry<"post">;
+	post: ContentEntry;
 }
 
 const { post } = Astro.props;
 const { ogImage, title, description, updatedDate, publishDate, series } = post.data;
-const socialImage = ogImage ?? `/og-image/${post.id}.png`;
+const socialImage = ogImage ?? `/og-image/${contentImageSlug(post)}.png`;
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 const { headings, remarkPluginFrontmatter } = await render(post);
-const readingTime: string = remarkPluginFrontmatter.readingTime;
+const readingTime: string = remarkPluginFrontmatter.readingTime ?? "";
 
-const allPosts = await getAllPosts();
+const allPosts = await getAllContent();
 const related = getRelatedPosts(post, allPosts, 3);
-const { prev, next } = getAdjacentPosts(post, allPosts);
+const { prev, next } = getAdjacentPosts(
+	post,
+	allPosts.filter((entry) => entry.collection === post.collection),
+);
 
 const seriesMeta = series ? await getSeriesMeta(series) : undefined;
 const seriesPosts = series ? getPostsInSeries(series, allPosts) : [];
@@ -38,15 +44,15 @@ const seriesAdjacent = seriesPosts.length
 	? getAdjacentInSeries(post, seriesPosts)
 	: { prev: undefined, next: undefined };
 
-// Prefer series prev/next when available
-const navPrev = seriesAdjacent.prev ?? prev;
-const navNext = seriesAdjacent.next ?? next;
+// Stay within a series, including its first and last chapters.
+const navPrev = seriesPosts.length ? seriesAdjacent.prev : prev;
+const navNext = seriesPosts.length ? seriesAdjacent.next : next;
 ---
 
 <BaseLayout
 	meta={{
 		articleDate,
-		description,
+		...(description !== undefined ? { description } : {}),
 		ogImage: socialImage,
 		title,
 	}}
@@ -71,7 +77,7 @@ const navNext = seriesAdjacent.next ?? next;
 				{
 					seriesMeta && seriesPosts.length > 1 && (
 						<div class="mt-10 lg:hidden">
-							<SeriesNav seriesMeta={seriesMeta} posts={seriesPosts} currentId={post.id} />
+							<SeriesNav seriesMeta={seriesMeta} posts={seriesPosts} currentPath={contentPath(post)} />
 						</div>
 					)
 				}
@@ -80,7 +86,7 @@ const navNext = seriesAdjacent.next ?? next;
 			<aside class="layout-rail space-y-4">
 				{
 					seriesMeta && seriesPosts.length > 0 && (
-						<SeriesNav seriesMeta={seriesMeta} posts={seriesPosts} currentId={post.id} compact />
+						<SeriesNav seriesMeta={seriesMeta} posts={seriesPosts} currentPath={contentPath(post)} compact />
 					)
 				}
 				{!!headings.length && <TOC headings={headings} />}

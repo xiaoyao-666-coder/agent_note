@@ -3,7 +3,8 @@ import type { GetStaticPaths } from "astro";
 import { Icon } from "astro-icon/components";
 import FormattedDate from "@/components/FormattedDate.astro";
 import {
-	getAllPosts,
+	contentPath,
+	getAllContent,
 	getPostsInSeries,
 	getSeriesMeta,
 	getSeriesWithCount,
@@ -13,7 +14,7 @@ import PageLayout from "@/layouts/Base.astro";
 
 export const getStaticPaths = (async () => {
 	const { getCollection } = await import("astro:content");
-	const allPosts = await getAllPosts();
+	const allPosts = await getAllContent();
 	const ids = getSeriesWithCount(allPosts).map(([id]) => id);
 	const declared = await getCollection("series");
 	const allIds = new Set([...ids, ...declared.map((s) => s.id)]);
@@ -21,13 +22,15 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const seriesId = Astro.params.series as string;
-const allPosts = await getAllPosts();
+const allPosts = await getAllContent();
 const posts = getPostsInSeries(seriesId, allPosts);
 const firstPost = posts[0];
+const articleCount = posts.filter((post) => post.collection === "post").length;
+const noteCount = posts.length - articleCount;
 const seriesMeta = await getSeriesMeta(seriesId);
 
 const meta = {
-	description: seriesMeta?.data.description ?? `系列「${seriesId}」的文章目录。`,
+	description: seriesMeta?.data.description ?? `系列「${seriesId}」的内容目录。`,
 	title: seriesMeta?.data.title ?? seriesId,
 };
 ---
@@ -51,16 +54,18 @@ const meta = {
 			<p class="mb-2 max-w-prose text-[var(--color-muted)]">{seriesMeta.data.description}</p>
 		)
 	}
-	<p class="mb-8 font-mono text-xs text-[var(--color-muted)]">{posts.length} 篇文章 · 建议按顺序阅读</p>
+	<p class="mb-8 font-mono text-xs text-[var(--color-muted)]">
+		{[articleCount ? `${articleCount} 篇文章` : "", noteCount ? `${noteCount} 篇笔记` : ""].filter(Boolean).join(" · ")} · 建议按顺序阅读
+	</p>
 
 	{
 		posts.length === 0 ? (
-			<p class="text-[var(--color-muted)]">该系列暂无文章。</p>
+			<p class="text-[var(--color-muted)]">该系列暂无内容。</p>
 		) : (
 			<ol class="space-y-3" role="list">
 				{posts.map((post, i) => (
 					<li>
-						<a class="post-card flex gap-4" href={`/posts/${post.id}/`}>
+						<a class="post-card flex gap-4" href={contentPath(post)}>
 							<span class="font-mono text-sm font-semibold text-[var(--color-accent)]">
 								{String(i + 1).padStart(2, "0")}
 							</span>
@@ -72,6 +77,7 @@ const meta = {
 									</span>
 								)}
 								<span class="meta-row mt-2">
+									<span class="chip">{post.collection === "note" ? "笔记" : "文章"}</span>
 									<span class="chip chip-accent">{post.data.category}</span>
 									<FormattedDate class="font-mono text-xs" date={post.data.publishDate} />
 								</span>
@@ -86,7 +92,7 @@ const meta = {
 	{
 		firstPost && (
 			<p class="mt-8">
-				<a class="chip chip-accent" href={`/posts/${firstPost.id}/`}>
+				<a class="chip chip-accent" href={contentPath(firstPost)}>
 					从第一篇开始阅读 →
 				</a>
 				<a class="chip ms-2" href={seriesPath(seriesId)}>

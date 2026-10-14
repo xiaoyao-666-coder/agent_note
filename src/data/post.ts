@@ -1,5 +1,16 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 
+export type ContentEntry = CollectionEntry<"post" | "note">;
+
+/** Canonical path; collection is part of an entry's identity. */
+export function contentPath(entry: ContentEntry): string {
+	return `/${entry.collection === "note" ? "notes" : "posts"}/${entry.id}/`;
+}
+
+export function contentImageSlug(entry: ContentEntry): string {
+	return entry.collection === "note" ? `notes/${entry.id}` : entry.id;
+}
+
 /** filter out draft posts based on the environment */
 export async function getAllPosts(): Promise<CollectionEntry<"post">[]> {
 	return await getCollection("post", ({ data }) => {
@@ -8,7 +19,15 @@ export async function getAllPosts(): Promise<CollectionEntry<"post">[]> {
 }
 
 export async function getAllNotes(): Promise<CollectionEntry<"note">[]> {
-	return await getCollection("note");
+	return await getCollection("note", ({ data }) => {
+		return import.meta.env.PROD ? !data.draft : true;
+	});
+}
+
+/** Shared indexes include both articles and notes. */
+export async function getAllContent(): Promise<ContentEntry[]> {
+	const [posts, notes] = await Promise.all([getAllPosts(), getAllNotes()]);
+	return [...posts, ...notes];
 }
 
 export async function getAllSeries(): Promise<CollectionEntry<"series">[]> {
@@ -56,15 +75,15 @@ export function groupByYearMonth<T extends { publishDate: Date }>(items: T[]) {
 	return [...groups.entries()].sort((a, b) => b[0].localeCompare(a[0]));
 }
 
-export function getAllTags(posts: CollectionEntry<"post">[]) {
+export function getAllTags(posts: ContentEntry[]) {
 	return posts.flatMap((post) => [...post.data.tags]);
 }
 
-export function getUniqueTags(posts: CollectionEntry<"post">[]) {
+export function getUniqueTags(posts: ContentEntry[]) {
 	return [...new Set(getAllTags(posts))];
 }
 
-export function getUniqueTagsWithCount(posts: CollectionEntry<"post">[]): [string, number][] {
+export function getUniqueTagsWithCount(posts: ContentEntry[]): [string, number][] {
 	return [
 		...getAllTags(posts).reduce(
 			(acc, t) => acc.set(t, (acc.get(t) ?? 0) + 1),
@@ -73,8 +92,8 @@ export function getUniqueTagsWithCount(posts: CollectionEntry<"post">[]): [strin
 	].sort((a, b) => b[1] - a[1]);
 }
 
-/** unique categories with counts from posts */
-export function getUniqueCategoriesWithCount(posts: CollectionEntry<"post">[]): [string, number][] {
+/** unique categories with counts from articles and notes */
+export function getUniqueCategoriesWithCount(posts: ContentEntry[]): [string, number][] {
 	const map = new Map<string, number>();
 	for (const post of posts) {
 		const cat = post.data.category;
@@ -84,10 +103,7 @@ export function getUniqueCategoriesWithCount(posts: CollectionEntry<"post">[]): 
 }
 
 /** posts belonging to a series, ordered by seriesOrder then date */
-export function getPostsInSeries(
-	seriesId: string,
-	allPosts: CollectionEntry<"post">[],
-): CollectionEntry<"post">[] {
+export function getPostsInSeries(seriesId: string, allPosts: ContentEntry[]): ContentEntry[] {
 	return allPosts
 		.filter((p) => p.data.series === seriesId)
 		.sort((a, b) => {
@@ -98,8 +114,8 @@ export function getPostsInSeries(
 		});
 }
 
-/** series ids used by published posts, with counts */
-export function getSeriesWithCount(posts: CollectionEntry<"post">[]): [string, number][] {
+/** series ids used by published content, with counts */
+export function getSeriesWithCount(posts: ContentEntry[]): [string, number][] {
 	const map = new Map<string, number>();
 	for (const post of posts) {
 		const id = post.data.series;
@@ -115,11 +131,11 @@ export function seriesPath(seriesId: string): string {
 
 /** related posts: same series > same category > shared tags */
 export function getRelatedPosts(
-	current: CollectionEntry<"post">,
-	allPosts: CollectionEntry<"post">[],
+	current: ContentEntry,
+	allPosts: ContentEntry[],
 	limit = 3,
-): CollectionEntry<"post">[] {
-	const others = allPosts.filter((p) => p.id !== current.id);
+): ContentEntry[] {
+	const others = allPosts.filter((p) => contentPath(p) !== contentPath(current));
 
 	const scored = others.map((post) => {
 		let score = 0;
@@ -142,13 +158,13 @@ export function getRelatedPosts(
 
 /** adjacent posts in chronological order (newest first list) */
 export function getAdjacentPosts(
-	current: CollectionEntry<"post">,
-	allPosts: CollectionEntry<"post">[],
-): { prev: CollectionEntry<"post"> | undefined; next: CollectionEntry<"post"> | undefined } {
+	current: ContentEntry,
+	allPosts: ContentEntry[],
+): { prev: ContentEntry | undefined; next: ContentEntry | undefined } {
 	const sorted = [...allPosts].sort(
 		(a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime(),
 	);
-	const index = sorted.findIndex((p) => p.id === current.id);
+	const index = sorted.findIndex((p) => contentPath(p) === contentPath(current));
 	return {
 		next: index > 0 ? sorted[index - 1] : undefined,
 		prev: index >= 0 && index < sorted.length - 1 ? sorted[index + 1] : undefined,
@@ -157,10 +173,10 @@ export function getAdjacentPosts(
 
 /** previous / next within the same series (reading order) */
 export function getAdjacentInSeries(
-	current: CollectionEntry<"post">,
-	seriesPosts: CollectionEntry<"post">[],
-): { prev: CollectionEntry<"post"> | undefined; next: CollectionEntry<"post"> | undefined } {
-	const index = seriesPosts.findIndex((p) => p.id === current.id);
+	current: ContentEntry,
+	seriesPosts: ContentEntry[],
+): { prev: ContentEntry | undefined; next: ContentEntry | undefined } {
+	const index = seriesPosts.findIndex((p) => contentPath(p) === contentPath(current));
 	if (index < 0) return { prev: undefined, next: undefined };
 	return {
 		prev: index > 0 ? seriesPosts[index - 1] : undefined,

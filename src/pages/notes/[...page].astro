@@ -2,14 +2,15 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import type { GetStaticPaths, Page } from "astro";
 import { Icon } from "astro-icon/components";
-import Note from "@/components/note/Note.astro";
+import PostPreview from "@/components/blog/PostPreview.astro";
 import Pagination from "@/components/Paginator.astro";
+import { getAllNotes, getPostsInSeries, seriesPath } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
 export const getStaticPaths = (async ({ paginate }) => {
 	const MAX_NOTES_PER_PAGE = 10;
-	const allNotes = await getCollection("note");
+	const allNotes = await getAllNotes();
 	return paginate(allNotes.sort(collectionDateSort), { pageSize: MAX_NOTES_PER_PAGE });
 }) satisfies GetStaticPaths;
 
@@ -18,9 +19,14 @@ interface Props {
 }
 
 const { page } = Astro.props;
+const allNotes = await getAllNotes();
+const noteSeries = (await getCollection("series"))
+	.map((series) => ({ ...series, count: getPostsInSeries(series.id, allNotes).length }))
+	.filter((series) => series.count > 0)
+	.sort((a, b) => a.data.order - b.data.order);
 
 const meta = {
-	description: "快速沉淀的命令、片段、链接与阶段性技术记录。",
+	description: "按专题整理课程学习、读书笔记、操作清单与命令速查，长篇笔记也可以按目录和系列阅读。",
 	title: "笔记",
 };
 
@@ -58,14 +64,33 @@ const paginationProps = {
 			</a>
 		</div>
 		<p class="mb-8 text-[var(--color-muted)]">
-			命令、片段与阶段性记录。完整结论请看
+			课程与读书笔记、操作清单、命令速查都收录在这里，按用途区分，不以篇幅长短划分。独立的方法总结请看
 			<a class="cactus-link" href="/posts/">文章</a>。
 		</p>
+		{
+			page.currentPage === 1 && noteSeries.length > 0 && (
+				<section class="mb-10" aria-label="专题笔记">
+					<h2 class="title mb-4 text-lg">按专题阅读</h2>
+					<ul class="grid gap-3 sm:grid-cols-2" role="list">
+						{noteSeries.map((series) => (
+							<li>
+								<a class="post-card h-full" href={seriesPath(series.id)}>
+									<span class="font-semibold text-[var(--color-accent-2)]">{series.data.title}</span>
+									<p class="mt-2 text-sm text-[var(--color-muted)]">{series.data.description}</p>
+									<span class="meta-row mt-3">{series.count} 篇笔记 · 按序阅读 →</span>
+								</a>
+							</li>
+						))}
+					</ul>
+				</section>
+			)
+		}
+		<h2 class="title mb-4 text-lg">全部笔记 <span class="text-sm font-normal text-[var(--color-muted)]">（{page.total} 篇）</span></h2>
 		<ul class="space-y-4 text-start" role="list">
 			{
 				page.data.map((note) => (
 					<li>
-						<Note note={note} as="h2" isPreview />
+						<PostPreview post={note} as="h3" variant="card" withDesc />
 					</li>
 				))
 			}

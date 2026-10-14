@@ -1,11 +1,11 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import PostPreview from "@/components/blog/PostPreview.astro";
+import { type ContentEntry, contentPath } from "@/data/post";
 
 interface Props {
-	posts: CollectionEntry<"post">[];
-	prev?: CollectionEntry<"post"> | undefined;
-	next?: CollectionEntry<"post"> | undefined;
+	posts: ContentEntry[];
+	prev?: ContentEntry | undefined;
+	next?: ContentEntry | undefined;
 }
 
 const { posts, prev, next } = Astro.props;
@@ -13,11 +13,11 @@ const { posts, prev, next } = Astro.props;
 
 {
 	(posts.length > 0 || prev || next) && (
-		<section class="mt-14 border-t border-[var(--color-border)] pt-10">
+		<section class="mt-14 border-t border-[var(--color-border)] pt-10" data-pagefind-ignore>
 			{(prev || next) && (
-				<nav aria-label="相邻文章" class="mb-10 grid gap-3 sm:grid-cols-2">
+				<nav aria-label="上一篇与下一篇" class="mb-10 grid gap-3 sm:grid-cols-2">
 					{prev ? (
-						<a class="post-card" href={`/posts/${prev.id}/`}>
+						<a class="post-card" href={contentPath(prev)}>
 							<span class="section-label mb-1">上一篇</span>
 							<span class="block font-medium text-[var(--color-accent-2)]">{prev.data.title}</span>
 						</a>
@@ -25,7 +25,7 @@ const { posts, prev, next } = Astro.props;
 						<div />
 					)}
 					{next ? (
-						<a class="post-card text-end sm:text-end" href={`/posts/${next.id}/`}>
+						<a class="post-card text-end sm:text-end" href={contentPath(next)}>
 							<span class="section-label mb-1 sm:justify-end">下一篇</span>
 							<span class="block font-medium text-[var(--color-accent-2)]">{next.data.title}</span>
 						</a>
@@ -34,7 +34,7 @@ const { posts, prev, next } = Astro.props;
 			)}
 			{posts.length > 0 && (
 				<>
-					<div class="section-label">相关文章</div>
+					<div class="section-label">相关内容</div>
 					<h2 class="title mb-4 text-lg">你可能还想看</h2>
 					<ul class="grid gap-3 sm:grid-cols-1" role="list">
 						{posts.map((post) => (

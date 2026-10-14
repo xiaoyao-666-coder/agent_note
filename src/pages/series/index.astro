@@ -1,9 +1,15 @@
 ---
 import { getCollection } from "astro:content";
-import { getAllPosts, getPostsInSeries, getSeriesWithCount, seriesPath } from "@/data/post";
+import {
+	contentPath,
+	getAllContent,
+	getPostsInSeries,
+	getSeriesWithCount,
+	seriesPath,
+} from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 
-const allPosts = await getAllPosts();
+const allPosts = await getAllContent();
 const counts = new Map(getSeriesWithCount(allPosts));
 const metaEntries = await getCollection("series");
 
@@ -18,7 +24,7 @@ const rows = [...names]
 			description: meta?.data.description ?? "",
 			order: meta?.data.order ?? 99,
 			count: counts.get(id) ?? posts.length,
-			firstHref: posts[0] ? `/posts/${posts[0].id}/` : seriesPath(id),
+			firstHref: posts[0] ? contentPath(posts[0]) : seriesPath(id),
 		};
 	})
 	.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title, "zh-CN"));
@@ -33,13 +39,13 @@ const meta = {
 	<div class="section-label">Series</div>
 	<h1 class="title mb-3">系列</h1>
 	<p class="mb-8 max-w-prose text-[var(--color-muted)]">
-		系列把多篇文章排成固定阅读顺序。单篇主题仍可用
+		系列把同一专题的文章与笔记排成固定阅读顺序。单篇主题仍可用
 		<a class="cactus-link" href="/categories/">分类</a> 与
 		<a class="cactus-link" href="/tags/">标签</a> 检索。
 	</p>
 	{
 		rows.length === 0 ? (
-			<p class="text-[var(--color-muted)]">暂无系列。在文章 frontmatter 中设置 series 即可出现。</p>
+			<p class="text-[var(--color-muted)]">暂无系列。</p>
 		) : (
 			<ul class="grid gap-4 sm:grid-cols-2" role="list">
 				{rows.map((row) => (

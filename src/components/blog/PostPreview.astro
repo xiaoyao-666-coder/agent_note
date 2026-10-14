@@ -1,11 +1,10 @@
 ---
-import type { CollectionEntry } from "astro:content";
 import type { HTMLTag, Polymorphic } from "astro/types";
 import FormattedDate from "@/components/FormattedDate.astro";
-import { categoryPath } from "@/data/post";
+import { type ContentEntry, categoryPath, contentPath } from "@/data/post";
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
-	post: CollectionEntry<"post">;
+	post: ContentEntry;
 	withDesc?: boolean;
 	/** card style for home / related lists */
 	variant?: "row" | "card";
@@ -17,8 +16,9 @@ const { data } = post;
 
 {
 	variant === "card" ? (
-		<a class="post-card" href={`/posts/${post.id}/`}>
+		<a class="post-card" href={contentPath(post)}>
 			<div class="meta-row mb-2">
+				<span class="chip">{post.collection === "note" ? "笔记" : "文章"}</span>
 				<span class="chip chip-accent">{data.category}</span>
 				{data.series && <span class="chip">系列</span>}
 				<FormattedDate date={data.publishDate} />
@@ -41,13 +41,14 @@ const { data } = post;
 			<FormattedDate class="font-mono text-xs font-medium text-[var(--color-muted)]" date={data.publishDate} />
 			<div class="min-w-0">
 				<div class="flex flex-wrap items-center gap-2">
+					<span class="chip">{post.collection === "note" ? "笔记" : "文章"}</span>
 					<a class="chip chip-accent" href={categoryPath(data.category)}>
 						{data.category}
 					</a>
 					{data.draft && <span class="text-xs text-red-500">草稿</span>}
 				</div>
 				<Tag class="mt-1 block">
-					<a class="cactus-link text-base font-medium text-[var(--color-accent-2)] no-underline hover:underline" href={`/posts/${post.id}/`}>
+					<a class="cactus-link text-base font-medium text-[var(--color-accent-2)] no-underline hover:underline" href={contentPath(post)}>
 						{data.title}
 					</a>
 				</Tag>

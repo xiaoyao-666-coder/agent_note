@@ -1,37 +1,40 @@
 ---
 import { Image } from "astro:assets";
-import type { CollectionEntry } from "astro:content";
 import FormattedDate from "@/components/FormattedDate.astro";
-import { categoryPath, getSeriesMeta, seriesPath } from "@/data/post";
+import { type ContentEntry, categoryPath, getSeriesMeta, seriesPath } from "@/data/post";
 
 interface Props {
-	content: CollectionEntry<"post">;
+	content: ContentEntry;
 	readingTime: string;
 }
 
-const {
-	content: { data },
-	readingTime,
-} = Astro.props;
+const { content, readingTime } = Astro.props;
+
+const { data } = content;
+const isNote = content.collection === "note";
+const coverImage = "coverImage" in data ? data.coverImage : undefined;
 
 const seriesMeta = data.series ? await getSeriesMeta(data.series) : undefined;
 ---
 
 {
-	data.coverImage && (
+	coverImage && (
 		<div class="mb-6 overflow-hidden rounded-xl border border-[var(--color-border)] aspect-video">
 			<Image
-				alt={data.coverImage.alt}
+				alt={coverImage.alt}
 				layout="constrained"
 				width={748}
 				height={420}
 				priority
-				src={data.coverImage.src}
+				src={coverImage.src}
 			/>
 		</div>
 	)
 }
 <div class="meta-row mb-3">
+	<a class="chip" href={isNote ? "/notes/" : "/posts/"} data-pagefind-filter={`type:${isNote ? "笔记" : "文章"}`}>
+		{isNote ? "笔记" : "文章"}
+	</a>
 	<a class="chip chip-accent" href={categoryPath(data.category)} data-pagefind-filter={`category:${data.category}`}>
 		{data.category}
 	</a>
@@ -77,8 +80,8 @@ const seriesMeta = data.series ? await getSeriesMeta(data.series) : undefined;
 	!!data.tags?.length && (
 		<div class="mt-4 flex flex-wrap gap-1.5">
 			{data.tags.map((tag) => (
-				<a class="chip" data-pagefind-filter={`tag:${tag}`} href={`/tags/${tag}/`}>
-					<span class="sr-only">查看更多带有此标签的文章：</span>#{tag}
+				<a class="chip" data-pagefind-filter={`tag:${tag}`} href={`/tags/${encodeURIComponent(tag)}/`}>
+					<span class="sr-only">查看更多带有此标签的内容：</span>#{tag}
 				</a>
 			))}
 		</div>

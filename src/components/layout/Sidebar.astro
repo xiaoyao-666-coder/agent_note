@@ -2,14 +2,14 @@
 import { getCollection } from "astro:content";
 import {
 	categoryPath,
-	getAllPosts,
+	getAllContent,
 	getSeriesWithCount,
 	getUniqueCategoriesWithCount,
 	getUniqueTagsWithCount,
 	seriesPath,
 } from "@/data/post";
 
-const allPosts = await getAllPosts();
+const allPosts = await getAllContent();
 const categories = getUniqueCategoriesWithCount(allPosts).slice(0, 8);
 const tags = getUniqueTagsWithCount(allPosts).slice(0, 12);
 const seriesCounts = getSeriesWithCount(allPosts);

@@ -12,9 +12,9 @@ const { headings } = Astro.props;
 const toc = generateToc(headings);
 ---
 
-<details open class="panel p-4">
-	<summary class="title hover:marker:text-[var(--color-accent)] cursor-pointer text-base">文章目录</summary>
-	<nav class="ms-1">
+<details open class="panel p-4" data-pagefind-ignore>
+	<summary class="title hover:marker:text-[var(--color-accent)] cursor-pointer text-base">正文目录</summary>
+	<nav class="ms-1" aria-label="正文目录">
 		<ol class="mt-3 space-y-1 text-sm text-[var(--color-muted)]">
 			{toc.map((heading) => <TOCHeading heading={heading} />)}
 		</ol>

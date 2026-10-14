@@ -4,12 +4,12 @@ import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import { Icon } from "astro-icon/components";
 import PostPreview from "@/components/blog/PostPreview.astro";
 import Pagination from "@/components/Paginator.astro";
-import { getAllPosts, getTagMeta, getUniqueTags } from "@/data/post";
+import { getAllContent, getTagMeta, getUniqueTags } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
 export const getStaticPaths = (async ({ paginate }) => {
-	const allPosts = await getAllPosts();
+	const allPosts = await getAllContent();
 	const sortedPosts = allPosts.sort(collectionDateSort);
 	const uniqueTags = getUniqueTags(sortedPosts);
 
@@ -31,7 +31,7 @@ const tagMeta = await getTagMeta(tag);
 const TagContent = tagMeta ? (await render(tagMeta)).Content : null;
 
 const meta = {
-	description: tagMeta?.data.description ?? `查看标签「${tag}」下的全部文章。`,
+	description: tagMeta?.data.description ?? `查看标签「${tag}」下的全部文章与笔记。`,
 	title: tagMeta?.data.title ?? `#${tag}`,
 };
 

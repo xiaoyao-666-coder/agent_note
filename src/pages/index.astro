@@ -2,10 +2,10 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostPreview from "@/components/blog/PostPreview.astro";
 import Sidebar from "@/components/layout/Sidebar.astro";
-import Note from "@/components/note/Note.astro";
 import SocialList from "@/components/SocialList.astro";
 import {
 	categoryPath,
+	getAllNotes,
 	getAllPosts,
 	getPostsInSeries,
 	getSeriesWithCount,
@@ -24,13 +24,14 @@ const latestPosts = allPostsByDate.slice(0, MAX_POSTS);
 
 const pinnedPosts = allPostsByDate.filter((p) => p.data.pinned).slice(0, 3);
 
-const allNotes = await getCollection("note");
+const allNotes = await getAllNotes();
+const allContent = [...allPosts, ...allNotes];
 const latestNotes = allNotes
 	.sort(collectionDateSort)
 	.slice(0, MAX_NOTES) as CollectionEntry<"note">[];
 
-const categories = getUniqueCategoriesWithCount(allPosts);
-const allTagCounts = getUniqueTagsWithCount(allPosts);
+const categories = getUniqueCategoriesWithCount(allContent);
+const allTagCounts = getUniqueTagsWithCount(allContent);
 const tags = allTagCounts.slice(0, 12);
 const categoryMeta = await getCollection("category");
 const categoryOrder = new Map(categoryMeta.map((c) => [c.id, c.data.order ?? 99]));
@@ -41,11 +42,11 @@ const sortedCategories = [...categories].sort((a, b) => {
 });
 
 const seriesMeta = await getCollection("series");
-const seriesCounts = getSeriesWithCount(allPosts);
+const seriesCounts = getSeriesWithCount(allContent);
 const seriesRows = seriesCounts
 	.map(([id, count]) => {
 		const meta = seriesMeta.find((s) => s.id === id);
-		const posts = getPostsInSeries(id, allPosts);
+		const posts = getPostsInSeries(id, allContent);
 		return {
 			id,
 			title: meta?.data.title ?? id,
@@ -64,12 +65,13 @@ const seriesRows = seriesCounts
 		<div class="section-label">Personal Knowledge Base</div>
 		<h1 class="title relative z-[1] text-2xl sm:text-3xl">逍遥哥的知识库</h1>
 		<p class="relative z-[1] mt-3 max-w-2xl leading-relaxed text-[var(--color-muted)]">
-			围绕人工智能、工程实践、知识管理与建站持续整理。知识索引汇总阅读路径与主题入口，文章沉淀完整结论，笔记保留可快速查找的命令和阶段记录。
+			围绕人工智能、工程实践、知识管理与建站持续整理。文章沉淀独立的方法与总结，笔记收录课程学习、读书记录、操作清单和命令速查，知识索引串起主题与阅读路径。
 		</p>
 		<div class="relative z-[1] mt-5 flex flex-wrap gap-2">
 			<a class="chip chip-accent" href="/knowledge/">打开知识索引</a>
 			<a class="chip" href="/series/">系列目录</a>
 			<a class="chip" href="/posts/">全部文章</a>
+			<a class="chip" href="/notes/">全部笔记</a>
 			<a class="chip" href="/archives/">时间归档</a>
 		</div>
 		<SocialList />
@@ -83,7 +85,7 @@ const seriesRows = seriesCounts
 			</a>
 			<a class="stat-card no-underline" href="/notes/">
 				<div class="stat-value">{allNotes.length}</div>
-				<div class="stat-label">条笔记</div>
+				<div class="stat-label">篇笔记</div>
 			</a>
 			<a class="stat-card no-underline" href="/series/">
 				<div class="stat-value">{seriesCounts.length}</div>
@@ -147,7 +149,7 @@ const seriesRows = seriesCounts
 												{meta?.data.title ?? name}
 											</span>
 											<p class="mt-1 line-clamp-2 text-xs text-[var(--color-muted)]">
-												{meta?.data.description ?? `${count} 篇文章`}
+												{meta?.data.description ?? `${count} 篇内容`}
 											</p>
 											<span class="meta-row mt-3 font-mono text-xs">{count} 篇</span>
 										</a>
@@ -206,7 +208,7 @@ const seriesRows = seriesCounts
 						<ul class="space-y-4" role="list">
 							{latestNotes.map((note) => (
 								<li>
-									<Note note={note} as="h3" isPreview />
+									<PostPreview post={note} as="h3" variant="card" withDesc />
 								</li>
 							))}
 						</ul>
@@ -226,7 +228,7 @@ const seriesRows = seriesCounts
 						</div>
 						<div class="flex flex-wrap gap-2">
 							{tags.map(([tag, count]) => (
-								<a class="chip" href={`/tags/${tag}/`}>
+								<a class="chip" href={`/tags/${encodeURIComponent(tag)}/`}>
 									#{tag}
 									<span class="opacity-60">{count}</span>
 								</a>

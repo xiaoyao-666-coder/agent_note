@@ -3,12 +3,12 @@ import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
 import { Icon } from "astro-icon/components";
 import PostPreview from "@/components/blog/PostPreview.astro";
 import Pagination from "@/components/Paginator.astro";
-import { getAllPosts, getCategoryMeta, getUniqueCategoriesWithCount } from "@/data/post";
+import { getAllContent, getCategoryMeta, getUniqueCategoriesWithCount } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
 export const getStaticPaths = (async ({ paginate }) => {
-	const allPosts = await getAllPosts();
+	const allPosts = await getAllContent();
 	const sorted = allPosts.sort(collectionDateSort);
 	const categories = getUniqueCategoriesWithCount(sorted).map(([name]) => name);
 
@@ -28,7 +28,7 @@ const category = Astro.params.category as string;
 const categoryMeta = await getCategoryMeta(category);
 
 const meta = {
-	description: categoryMeta?.data.description ?? `分类「${category}」下的全部文章。`,
+	description: categoryMeta?.data.description ?? `分类「${category}」下的全部文章与笔记。`,
 	title: categoryMeta?.data.title ?? category,
 };
 
@@ -67,7 +67,7 @@ const paginationProps = {
 			<p class="mb-8 text-[var(--color-muted)]">{categoryMeta.data.description}</p>
 		)
 	}
-	<p class="mb-6 font-mono text-xs text-[var(--color-muted)]">{page.data.length} 篇文章（本页）</p>
+	<p class="mb-6 font-mono text-xs text-[var(--color-muted)]">共 {page.total} 篇内容 · 本页 {page.data.length} 篇</p>
 	<ul class="space-y-3" role="list">
 		{
 			page.data.map((p) => (
