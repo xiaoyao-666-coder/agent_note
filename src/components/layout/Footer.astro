@@ -1,12 +1,19 @@
 ---
+import { getAllPosts } from "@/data/post";
 import { menuLinks, siteConfig } from "@/site.config";
 
+const hasPosts = (await getAllPosts()).length > 0;
+const visibleMenuLinks = menuLinks.filter((link) => link.path !== "/posts/" || hasPosts);
 const year = new Date().getFullYear();
 ---
 
-<footer class="site-footer flex w-full flex-col items-center justify-center gap-y-3 text-center sm:flex-row sm:justify-between sm:text-start">
+<footer
+	class="site-footer flex w-full flex-col items-center justify-center gap-y-3 text-center sm:flex-row sm:justify-between sm:text-start"
+>
 	<div>
-		<span class="font-mono text-[0.7rem] tracking-wider text-[var(--color-accent)]">KNOWLEDGE BASE</span>
+		<span class="font-mono text-[0.7rem] tracking-wider text-[var(--color-accent)]"
+			>KNOWLEDGE BASE</span
+		>
 		<p class="mt-1">
 			&copy; {siteConfig.author}
 			{year}
@@ -16,7 +23,7 @@ const year = new Date().getFullYear();
 	</div>
 	<nav aria-label="页脚导航" class="flex flex-wrap justify-center gap-1 sm:justify-end">
 		{
-			menuLinks.map((link) => (
+			visibleMenuLinks.map((link) => (
 				<a class="nav-link" href={link.path}>
 					{link.title}
 				</a>

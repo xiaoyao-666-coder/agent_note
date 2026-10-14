@@ -26,7 +26,7 @@ const noteSeries = (await getCollection("series"))
 	.sort((a, b) => a.data.order - b.data.order);
 
 const meta = {
-	description: "按专题整理课程学习、读书笔记、操作清单与命令速查，长篇笔记也可以按目录和系列阅读。",
+	description: "人工智能课程与 Agent 工程学习笔记，涵盖模型训练、推理和 Agent Harness。",
 	title: "笔记",
 };
 
@@ -60,22 +60,23 @@ const paginationProps = {
 			>
 				<span class="sr-only">笔记 RSS 订阅</span>
 				<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:rss" />
-				<span class="text-xs font-mono">RSS</span>
+				<span class="font-mono text-xs">RSS</span>
 			</a>
 		</div>
 		<p class="mb-8 text-[var(--color-muted)]">
-			课程与读书笔记、操作清单、命令速查都收录在这里，按用途区分，不以篇幅长短划分。独立的方法总结请看
-			<a class="cactus-link" href="/posts/">文章</a>。
+			人工智能课程与 Agent 工程的学习记录，涵盖模型训练、推理、工具调用与上下文管理。
 		</p>
 		{
 			page.currentPage === 1 && noteSeries.length > 0 && (
 				<section class="mb-10" aria-label="专题笔记">
 					<h2 class="title mb-4 text-lg">按专题阅读</h2>
-					<ul class="grid gap-3 sm:grid-cols-2" role="list">
+					<ul class:list={["grid gap-3", noteSeries.length > 1 && "sm:grid-cols-2"]} role="list">
 						{noteSeries.map((series) => (
 							<li>
 								<a class="post-card h-full" href={seriesPath(series.id)}>
-									<span class="font-semibold text-[var(--color-accent-2)]">{series.data.title}</span>
+									<span class="font-semibold text-[var(--color-accent-2)]">
+										{series.data.title}
+									</span>
 									<p class="mt-2 text-sm text-[var(--color-muted)]">{series.data.description}</p>
 									<span class="meta-row mt-3">{series.count} 篇笔记 · 按序阅读 →</span>
 								</a>
@@ -85,7 +86,10 @@ const paginationProps = {
 				</section>
 			)
 		}
-		<h2 class="title mb-4 text-lg">全部笔记 <span class="text-sm font-normal text-[var(--color-muted)]">（{page.total} 篇）</span></h2>
+		<h2 class="title mb-4 text-lg">
+			全部笔记 <span class="text-sm font-normal text-[var(--color-muted)]"
+				>（{page.total} 篇）</span>
+		</h2>
 		<ul class="space-y-4 text-start" role="list">
 			{
 				page.data.map((note) => (

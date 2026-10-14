@@ -13,7 +13,7 @@ const allPosts = await getAllContent();
 const counts = new Map(getSeriesWithCount(allPosts));
 const metaEntries = await getCollection("series");
 
-const names = new Set([...counts.keys(), ...metaEntries.map((s) => s.id)]);
+const names = new Set(counts.keys());
 const rows = [...names]
 	.map((id) => {
 		const meta = metaEntries.find((s) => s.id === id);
@@ -38,16 +38,12 @@ const meta = {
 <PageLayout meta={meta}>
 	<div class="section-label">Series</div>
 	<h1 class="title mb-3">系列</h1>
-	<p class="mb-8 max-w-prose text-[var(--color-muted)]">
-		系列把同一专题的文章与笔记排成固定阅读顺序。单篇主题仍可用
-		<a class="cactus-link" href="/categories/">分类</a> 与
-		<a class="cactus-link" href="/tags/">标签</a> 检索。
-	</p>
+	<p class="mb-8 max-w-prose text-[var(--color-muted)]">从第一章开始，按顺序阅读同一专题。</p>
 	{
 		rows.length === 0 ? (
 			<p class="text-[var(--color-muted)]">暂无系列。</p>
 		) : (
-			<ul class="grid gap-4 sm:grid-cols-2" role="list">
+			<ul class:list={["grid gap-4", rows.length > 1 && "sm:grid-cols-2"]} role="list">
 				{rows.map((row) => (
 					<li>
 						<a class="post-card h-full" href={seriesPath(row.id)}>

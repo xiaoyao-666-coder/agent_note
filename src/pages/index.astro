@@ -14,6 +14,7 @@ import {
 	seriesPath,
 } from "@/data/post";
 import PageLayout from "@/layouts/Base.astro";
+import { siteConfig } from "@/site.config";
 import { collectionDateSort } from "@/utils/date";
 
 const MAX_POSTS = 6;
@@ -65,12 +66,18 @@ const seriesRows = seriesCounts
 		<div class="section-label">Personal Knowledge Base</div>
 		<h1 class="title relative z-[1] text-2xl sm:text-3xl">逍遥哥的知识库</h1>
 		<p class="relative z-[1] mt-3 max-w-2xl leading-relaxed text-[var(--color-muted)]">
-			围绕人工智能、工程实践、知识管理与建站持续整理。文章沉淀独立的方法与总结，笔记收录课程学习、读书记录、操作清单和命令速查，知识索引串起主题与阅读路径。
+			{siteConfig.description}
 		</p>
 		<div class="relative z-[1] mt-5 flex flex-wrap gap-2">
 			<a class="chip chip-accent" href="/knowledge/">打开知识索引</a>
 			<a class="chip" href="/series/">系列目录</a>
-			<a class="chip" href="/posts/">全部文章</a>
+			{
+				allPosts.length > 0 && (
+					<a class="chip" href="/posts/">
+						全部文章
+					</a>
+				)
+			}
 			<a class="chip" href="/notes/">全部笔记</a>
 			<a class="chip" href="/archives/">时间归档</a>
 		</div>
@@ -79,10 +86,14 @@ const seriesRows = seriesCounts
 
 	<section class="mt-10">
 		<div class="stat-grid">
-			<a class="stat-card no-underline" href="/posts/">
-				<div class="stat-value">{allPosts.length}</div>
-				<div class="stat-label">篇文章</div>
-			</a>
+			{
+				allPosts.length > 0 && (
+					<a class="stat-card no-underline" href="/posts/">
+						<div class="stat-value">{allPosts.length}</div>
+						<div class="stat-label">篇文章</div>
+					</a>
+				)
+			}
 			<a class="stat-card no-underline" href="/notes/">
 				<div class="stat-value">{allNotes.length}</div>
 				<div class="stat-label">篇笔记</div>
@@ -110,7 +121,7 @@ const seriesRows = seriesCounts
 								全部系列 →
 							</a>
 						</div>
-						<ul class="grid gap-3 sm:grid-cols-2" role="list">
+						<ul class:list={["grid gap-3", seriesRows.length > 1 && "sm:grid-cols-2"]} role="list">
 							{seriesRows.map((row) => (
 								<li>
 									<a class="post-card h-full" href={seriesPath(row.id)}>
@@ -139,7 +150,7 @@ const seriesRows = seriesCounts
 								全部 →
 							</a>
 						</div>
-						<ul class="grid gap-3 sm:grid-cols-3" role="list">
+						<ul class="grid gap-3 sm:grid-cols-2" role="list">
 							{sortedCategories.map(([name, count]) => {
 								const meta = categoryMeta.find((c) => c.id === name);
 								return (
@@ -177,23 +188,26 @@ const seriesRows = seriesCounts
 				)
 			}
 
-			<section>
-				<div class="section-label">Latest</div>
-				<div class="mb-4 flex items-end justify-between gap-3">
-					<h2 class="title text-xl">最新文章</h2>
-					<a class="text-sm text-[var(--color-accent)] hover:underline" href="/posts/">全部文章 →</a
-					>
-				</div>
-				<ul class="space-y-4" role="list">
-					{
-						latestPosts.map((p) => (
-							<li class="panel-soft px-4 py-3">
-								<PostPreview post={p} withDesc />
-							</li>
-						))
-					}
-				</ul>
-			</section>
+			{
+				latestPosts.length > 0 && (
+					<section>
+						<div class="section-label">Latest</div>
+						<div class="mb-4 flex items-end justify-between gap-3">
+							<h2 class="title text-xl">最新文章</h2>
+							<a class="text-sm text-[var(--color-accent)] hover:underline" href="/posts/">
+								全部文章 →
+							</a>
+						</div>
+						<ul class="space-y-4" role="list">
+							{latestPosts.map((p) => (
+								<li class="panel-soft px-4 py-3">
+									<PostPreview post={p} withDesc />
+								</li>
+							))}
+						</ul>
+					</section>
+				)
+			}
 
 			{
 				latestNotes.length > 0 && (

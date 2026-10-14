@@ -13,6 +13,7 @@ export const getStaticPaths = (async ({ paginate }) => {
 	const MAX_POSTS_PER_PAGE = 10;
 	const MAX_PINNED_POSTS = 3;
 	const allPosts = await getAllPosts();
+	if (allPosts.length === 0) return [];
 	const allPostsByDate = allPosts.sort(collectionDateSort);
 	const pinnedPosts = allPostsByDate.filter((p) => p.data.pinned).slice(0, MAX_PINNED_POSTS);
 	return paginate(allPostsByDate, {
@@ -63,19 +64,12 @@ const descYearKeys = Object.keys(groupedByYear).sort((a, b) => +b - +a);
 			href="/rss.xml"
 			target="_blank"
 		>
-			<span class="sr-only">文章 RSS 订阅</span>
+			<span class="sr-only">全站 RSS 订阅</span>
 			<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:rss" />
-			<span class="text-xs font-mono">RSS</span>
+			<span class="font-mono text-xs">RSS</span>
 		</a>
 	</div>
-	<p class="mb-8 max-w-2xl text-[var(--color-muted)]">
-		知识库介绍、有完整论述的方法总结和项目复盘。课程学习、读书记录、速查与清单请到
-		<a class="cactus-link" href="/notes/">笔记</a> 查看。全部内容可按
-		<a class="cactus-link" href="/categories/">分类</a>、
-		<a class="cactus-link" href="/series/">系列</a>、
-		<a class="cactus-link" href="/tags/">标签</a> 或
-		<a class="cactus-link" href="/archives/">时间</a> 浏览。
-	</p>
+	<p class="mb-8 max-w-2xl text-[var(--color-muted)]">技术实践、方法总结与项目复盘。</p>
 	<div class="layout-with-rail">
 		<div class="min-w-0">
 			{

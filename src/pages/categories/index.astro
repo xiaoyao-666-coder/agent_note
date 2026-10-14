@@ -7,8 +7,7 @@ const allPosts = await getAllContent();
 const counts = new Map(getUniqueCategoriesWithCount(allPosts));
 const metaEntries = await getCollection("category");
 
-// Merge declared categories with those used by articles and notes.
-const names = new Set([...counts.keys(), ...metaEntries.map((c) => c.id)]);
+const names = new Set(counts.keys());
 const rows = [...names].map((name) => {
 	const meta = metaEntries.find((c) => c.id === name);
 	return {
@@ -22,7 +21,7 @@ const rows = [...names].map((name) => {
 rows.sort((a, b) => a.order - b.order || a.name.localeCompare(b.name, "zh-CN"));
 
 const meta = {
-	description: "按一级主题浏览知识库中的文章与笔记，分类边界清晰、数量精简。",
+	description: "按主题浏览人工智能与工程实践的学习笔记。",
 	title: "分类",
 };
 ---
@@ -30,11 +29,7 @@ const meta = {
 <PageLayout meta={meta}>
 	<div class="section-label">Categories</div>
 	<h1 class="title mb-3">分类</h1>
-	<p class="mb-8 max-w-prose text-[var(--color-muted)]">
-		分类是内容的一级主题，用于导航与归档。细粒度关键词请使用
-		<a class="cactus-link" href="/tags/">标签</a>；按时间浏览请使用
-		<a class="cactus-link" href="/archives/">归档</a>。
-	</p>
+	<p class="mb-8 max-w-prose text-[var(--color-muted)]">按主题查找学习笔记与技术实践。</p>
 	<ul class="grid gap-4 sm:grid-cols-2" role="list">
 		{
 			rows.map((row) => (

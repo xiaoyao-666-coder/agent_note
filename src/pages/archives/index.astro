@@ -53,7 +53,11 @@ function formatMonthLabel(key: string) {
 	<h1 class="title mb-3">归档</h1>
 	<p class="mb-8 text-[var(--color-muted)]">
 		共 <span class="font-mono text-[var(--color-accent-2)]">{items.length}</span> 条内容（
-		{posts.length} 篇文章 · {notes.length} 篇笔记）。按主题浏览请使用
+		{
+			[posts.length ? `${posts.length} 篇文章` : "", notes.length ? `${notes.length} 篇笔记` : ""]
+				.filter(Boolean)
+				.join(" · ")
+		}）。按主题浏览请使用
 		<a class="cactus-link" href="/categories/">分类</a>。
 	</p>
 	{
@@ -69,7 +73,10 @@ function formatMonthLabel(key: string) {
 								dateTimeOptions={{ month: "2-digit", day: "2-digit" }}
 							/>
 							<div class="min-w-0">
-								<a class="cactus-link font-medium text-[var(--color-accent-2)] no-underline hover:underline" href={item.href}>
+								<a
+									class="cactus-link font-medium text-[var(--color-accent-2)] no-underline hover:underline"
+									href={item.href}
+								>
 									{item.title}
 								</a>
 								<div class="meta-row mt-0.5">

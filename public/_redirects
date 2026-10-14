@@ -1,4 +1,4 @@
-# Preserve bookmarks after moving learning notes and checklists out of articles.
+# Preserve bookmarks after moving technical learning notes out of articles.
 /posts/ai-agent-course/01-introduction/ /notes/ai-agent-course/01-introduction/ 301
 /posts/ai-agent-course/01-introduction /notes/ai-agent-course/01-introduction/ 301
 /posts/ai-agent-course/02-pretraining/ /notes/ai-agent-course/02-pretraining/ 301
@@ -25,11 +25,3 @@
 /posts/ai-agent-course/12-speech /notes/ai-agent-course/12-speech/ 301
 /posts/agent-harness-notes/ /notes/agent-harness-notes/ 301
 /posts/agent-harness-notes /notes/agent-harness-notes/ 301
-/posts/cloudflare-pages-checklist/ /notes/cloudflare-pages-checklist/ 301
-/posts/cloudflare-pages-checklist /notes/cloudflare-pages-checklist/ 301
-/posts/pages-preview-and-rollback/ /notes/pages-preview-and-rollback/ 301
-/posts/pages-preview-and-rollback /notes/pages-preview-and-rollback/ 301
-
-# The old second article page is no longer needed.
-/posts/2/ /posts/ 301
-/posts/2 /posts/ 301

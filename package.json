@@ -7,7 +7,7 @@
 		"postinstall": "npm rebuild sharp --force",
 		"test": "node --test tests/*.test.mjs",
 		"check:content": "node scripts/check-public-content.mjs",
-		"prebuild": "pnpm check:content",
+		"prebuild": "pnpm check:content && astro sync --force",
 		"dev": "astro dev",
 		"start": "astro dev",
 		"build": "astro build",

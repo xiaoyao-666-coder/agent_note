@@ -5,7 +5,7 @@ export const siteConfig: SiteConfig = {
 	url: "https://xiaoyao-knowledge.pages.dev/",
 	title: "逍遥哥的知识库",
 	author: "逍遥哥",
-	description: "整理人工智能、工程实践、知识管理与建站过程中的长期可复用知识。",
+	description: "记录基础模型、推理、AI Agent 与 Agent Harness 的学习笔记，梳理关键原理和工程方法。",
 	lang: "zh-CN",
 	ogLocale: "zh_CN",
 	showLogo: true,

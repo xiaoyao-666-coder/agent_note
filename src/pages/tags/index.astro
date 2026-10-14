@@ -6,7 +6,7 @@ const allPosts = await getAllContent();
 const allTags = getUniqueTagsWithCount(allPosts);
 
 const meta = {
-	description: "按关键词交叉检索文章与笔记；主题导航请使用分类。",
+	description: "按技术关键词查找相关学习笔记。",
 	title: "标签",
 };
 ---
@@ -14,10 +14,7 @@ const meta = {
 <PageLayout meta={meta}>
 	<div class="section-label">Tags</div>
 	<h1 class="title mb-3">标签</h1>
-	<p class="mb-8 max-w-prose text-[var(--color-muted)]">
-		标签是细粒度关键词，可交叉组合。一级主题请使用
-		<a class="cactus-link" href="/categories/">分类</a>。
-	</p>
+	<p class="mb-8 max-w-prose text-[var(--color-muted)]">按技术关键词查找相关内容。</p>
 	{
 		allTags.length === 0 ? (
 			<p class="text-[var(--color-muted)]">暂无标签。</p>
@@ -25,7 +22,11 @@ const meta = {
 			<ul class="flex flex-wrap gap-2" role="list">
 				{allTags.map(([tag, val]) => (
 					<li>
-						<a class="chip" href={`/tags/${encodeURIComponent(tag)}/`} title={`查看标签「${tag}」下的文章与笔记`}>
+						<a
+							class="chip"
+							href={`/tags/${encodeURIComponent(tag)}/`}
+							title={`查看标签「${tag}」下的文章与笔记`}
+						>
 							#{tag}
 							<span class="font-mono opacity-60">{val}</span>
 						</a>
