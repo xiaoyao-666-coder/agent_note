@@ -2,7 +2,7 @@
 title: 《御舆：解码 Agent Harness》详细学习笔记
 description: 系统整理 Agent Harness 的对话循环、工具与权限、上下文和记忆、子智能体、MCP、流式架构及生产化设计。
 publishDate: 2026-07-17
-category: 工程实践
+category: 人工智能
 tags:
   - Agent Harness
   - Claude Code
