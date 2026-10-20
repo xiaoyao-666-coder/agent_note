@@ -1,6 +1,6 @@
 # Chapter 01｜LangChain 通识
 
-> 根据项目中的 9 张课程截图整理，合并重复内容，重点梳理概念、组件关系与选型思路。截图中的生态介绍以「截至 2025 年 11 月」为背景；文末另列官方文档核对后的概念补充。整理日期：2026-10-20。
+> 根据 9 张课程截图整理，合并重复内容，重点梳理概念、组件关系与选型思路。整理日期：2026-10-20。
 
 ## 1. LangChain 生态概览
 
@@ -15,7 +15,6 @@
 | **Deep Agents** | 面向复杂任务的智能体执行框架（Agent Harness） | 如何让智能体规划任务、管理文件并委派子任务？ | 规划、文件系统、子智能体、记忆 |
 | **LangSmith** | 调用追踪、调试与评测平台 | 智能体运行过程是否正常，结果质量如何？ | 全链路追踪、调试、评测、协作 |
 
-截图使用了 `Deep Agent` 和 `Deep Agents` 两种写法，本笔记统一使用官方项目名称 **Deep Agents**。
 
 ## 2. LangChain：智能体开发的基础能力
 
@@ -129,16 +128,12 @@ LangSmith 贯穿开发与运行过程，可以与上述框架配合使用。它�
 
 ### 6.2 按实现关系理解
 
-下面的图表示高层智能体实现与底层运行时之间的关系，补充说明截图中的概念分层：
+高层智能体实现与底层运行时之间的关系如下：
 
-```mermaid
-flowchart TD
-    D[Deep Agents：规划、文件与子智能体] -->|构建于| C[LangChain Agents：智能体开发接口]
-    C -->|运行于| G[LangGraph：编排与运行时]
-    S[LangSmith：追踪、调试与评测] -.->|观测| D
-    S -.->|观测| C
-    S -.->|观测| G
-```
+- **Deep Agents** 构建于 LangChain Agents，提供规划、文件管理和子智能体等能力。
+- **LangChain Agents** 运行于 LangGraph，提供较高层的智能体开发接口。
+- **LangGraph** 负责工作流编排与运行时支持。
+- **LangSmith** 可以对上述框架构建的应用进行追踪、调试与评测。
 
 **LangGraph 也可以独立使用。** “LangChain 提供基础能力”描述的是开发职责，不代表 LangGraph 在代码依赖上必须建立在 LangChain 之上。
 
@@ -183,19 +178,3 @@ flowchart TD
 3. **选型方式：** 三个开发框架服务于不同抽象层次，可以组合，也可以按需要直接使用其中合适的一层。
 
 核对参考：[Deep Agents Overview](https://docs.langchain.com/oss/python/deepagents/overview)、[Deep Agents Python 参考](https://docs.langchain.com/oss/python/reference/deepagents-python)、[LangGraph Overview](https://docs.langchain.com/oss/javascript/langgraph/overview)。
-
-## 附录：原始图片索引
-
-以下链接指向 `附件/chapter01/` 中的原图，便于回看课程内容。
-
-| 图片 | 主要内容 |
-| --- | --- |
-| [212021](<附件/chapter01/屏幕截图 2026-10-19 212021.png>) | 官网、GitHub 与文档入口 |
-| [212216](<附件/chapter01/屏幕截图 2026-10-19 212216.png>) | LangChain 智能体生态及四个核心组成部分 |
-| [212331](<附件/chapter01/屏幕截图 2026-10-19 212331.png>) | LangChain 定位与核心价值 |
-| [212406](<附件/chapter01/屏幕截图 2026-10-19 212406.png>) | LangGraph 的节点、边和状态 |
-| [212452](<附件/chapter01/屏幕截图 2026-10-19 212452.png>) | LangChain 与 LangGraph 的职责对比 |
-| [212531](<附件/chapter01/屏幕截图 2026-10-19 212531.png>) | Deep Agents 定位与核心能力 |
-| [212614](<附件/chapter01/屏幕截图 2026-10-19 212614.png>) | 三个开发框架的协作关系 |
-| [212643](<附件/chapter01/屏幕截图 2026-10-19 212643.png>) | LangSmith 的定位 |
-| [212703](<附件/chapter01/屏幕截图 2026-10-19 212703.png>) | LangSmith 的四个核心目标 |
