@@ -10,16 +10,18 @@
 
 网站的 `/knowledge/` 页面直接读取内容元数据，是文章数量、系列顺序、分类和标签的唯一实时索引。README 只保留稳定的信息架构与主要入口，避免维护两套互相冲突的目录。
 
-截至 2026-10-19，公开内容包含 13 篇技术笔记、1 个主题分类和 1 条课程阅读路径。文章栏目在有公开文章时自动显示。
+截至 2026-10-28，公开内容包含 23 篇技术笔记、1 个主题分类和 2 条系列阅读路径。文章栏目在有公开文章时自动显示。
 
 | 一级主题 | 当前内容  | 主要入口                        | 源文件位置                                                           |
 | -------- | --------- | ------------------------------- | -------------------------------------------------------------------- |
 | 人工智能 | 12 篇笔记 | 李宏毅老师 AI 课程 PPT 学习笔记 | [`content/notes/ai-agent-course/`](./content/notes/ai-agent-course/) |
 | 人工智能 | 1 篇笔记  | Agent Harness 的运行机制        | [`agent-harness-notes.md`](./content/notes/agent-harness-notes.md)   |
+| 人工智能 | 10 篇笔记 | LangChain 学习笔记 | [`content/notes/langchain/`](./content/notes/langchain/) |
 
 ### 系列阅读路径
 
 1. **李宏毅老师 AI 课程 PPT 学习笔记**：12 章，覆盖基础模型、预训练、后训练、推理、AI Agent、可解释性、模型编辑、模型合并、Mamba 与语音模型。
+2. **[LangChain 学习笔记](https://xiaoyao-knowledge.pages.dev/series/langchain/)**：10 章，覆盖模型调用、LangSmith、消息与提示词、工具、结构化输出、智能体、中间件、上下文与记忆，以及 RAG。
 
 ## 浏览结构
 

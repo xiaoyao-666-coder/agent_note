@@ -1,0 +1,170 @@
+---
+title: LangChain：结构化输出
+description: 使用 Schema 定义模型输出，理解结构化结果的生成、校验和解析方式。
+publishDate: "2026-10-28"
+category: 人工智能
+tags:
+  - LangChain
+  - 结构化输出
+  - Pydantic
+series: langchain
+seriesOrder: 6
+---
+
+结构化输出让模型结果能够被程序稳定读取和校验。本章围绕聊天模型的 Schema 定义、输出方式和解析流程展开；Agent 的 `response_format` 见[第 7 章](/notes/langchain/07-agents/)。
+
+> 适用版本：LangChain 1.2.12。示例中的 `model` 需已初始化，并支持所选结构化输出方式。
+
+## 1. 为什么需要结构化输出
+
+自然语言回答便于人阅读，但程序很难稳定地从不同表达中提取字段。结构化输出用 Schema 明确字段、类型、必填项和约束，让结果更适合表单抽取、分类、路由与工作流传递。
+
+例如把“这门课叫 LangChain 入门，共十章”变为 `{"title": "LangChain 入门", "chapters": 10}`，程序可直接读取字段。
+
+区分三个层面：
+
+1. **JSON 语法有效：** 能被 JSON 解析器读懂。
+2. **Schema 符合要求：** 字段存在、类型和范围正确。
+3. **业务事实正确：** 内容确实来自输入或证据。
+
+前两项通过不代表第三项正确。需要允许“未知”时，应把缺失语义写入 Schema 和提示词，避免为填满必填字段而编造。
+
+## 2. 四种 Schema
+
+| 方式 | 主要优势 | 模型接口中常见结果 | 校验边界 |
+| --- | --- | --- | --- |
+| Pydantic `BaseModel` | 字段描述、运行校验、嵌套与约束 | 对应类的实例 | 会验证，但默认可能发生类型转换 |
+| `TypedDict` | 轻量字典类型声明 | 字典 | Python 类型声明本身不做运行时验证 |
+| JSON Schema 字典 | 跨语言、可配置、协议通用 | 字典 | 约束由提供商/解析器/业务校验器决定 |
+| `dataclass` | 简洁的数据类定义 | 依适配器而定，可能为字典 | 标准 dataclass 自身不强制字段类型 |
+
+以上是本章 `with_structured_output()` 的语境，不应外推到所有适配器或 Agent 路径。是否接受 dataclass、返回什么对象，要查实际集成；第 7 章 Agent 的解析路径可构造数据类实例。
+
+### 2.1 Pydantic：优先理解的方式
+
+```python
+from typing import Literal
+from pydantic import BaseModel, Field
+
+class CourseInfo(BaseModel):
+    """从用户提供的文字提取课程信息。"""
+    title: str = Field(description="课程名称")
+    chapters: int = Field(ge=1, description="课程章节数")
+    level: Literal["入门", "进阶"] = Field(description="课程难度")
+    teacher: str | None = Field(default=None, description="讲师；未提及时为 null")
+
+structured_model = model.with_structured_output(
+    CourseInfo, method="function_calling"
+)
+result = structured_model.invoke("LangChain 入门课共十章，适合初学者。")
+print(result.title)
+print(result.model_dump())
+```
+
+示例指定工具调用方式，前提是适配器支持。不能仅凭某个模型能聊天，就假设此方法一定可用。
+
+常见字段设计：
+
+- **可空与可省略不同：** `str | None` 允许值为 null；加 `= None` 或 `Field(default=None)` 才表达本地构造时可省略。
+- **默认值：** 缺少字段时可回填，但不能把业务事实的缺失随意转成有意义的数值。
+- **枚举：** `Literal` 或 `Enum` 限制分类集合。
+- **列表：** `list[Item]` 表达多条提取结果。
+- **嵌套：** 用子 BaseModel 表达对象关系；过深结构会增加模型输出难度。
+- **范围：** `Field(ge=..., le=...)`、长度约束等表达可验证规则。
+
+Pydantic 在运行时验证数据，不是在运行前自动检查全部值；静态检查来自类型检查器。默认的宽松校验可能把 `"10"` 转换为 `10`，需要严格类型时显式配置 strict 行为。
+
+### 2.2 TypedDict
+
+```python
+from typing import Annotated
+from typing_extensions import TypedDict
+
+class CourseDict(TypedDict):
+    title: Annotated[str, ..., "课程名称"]
+    chapters: Annotated[int, ..., "章节数"]
+
+extractor = model.with_structured_output(CourseDict, method="function_calling")
+```
+
+`Annotated` 附加的说明供框架生成 Schema；不会把 TypedDict 变成自动验证器。Python 中可用 `NotRequired` 表达允许缺少键，可空类型表示值可以为 None；提供商对可选字段的支持还要另行确认。
+
+### 2.3 JSON Schema
+
+```python
+course_schema = {
+    "title": "CourseInfo",
+    "description": "课程信息",
+    "type": "object",
+    "properties": {
+        "title": {"type": "string", "description": "课程名称"},
+        "chapters": {"type": "integer", "minimum": 1},
+    },
+    "required": ["title", "chapters"],
+    "additionalProperties": False,
+}
+```
+
+`properties` 描述字段，`required` 列出必须出现的键，`additionalProperties` 控制额外字段。应传字典而非随意拼接 JSON 字符串。
+
+JSON Schema 的 `title` 本身没有统一的“只能英文”规则，但将 Schema 映射为工具名称时，可能受到供应商接口的命名限制。为兼容工具调用，Schema 标识名使用简单英文更稳妥。
+
+### 2.4 dataclass
+
+`@dataclass` 生成构造、比较和展示等方法，并保留字段元信息；普通手写 `__init__` 的类不能直接等同于可识别的数据类 Schema。它适合数据容器，但本身不验证传入值的类型。
+
+## 3. 从 Schema 到结果
+
+流程：定义 Schema → 转为接口可接受的结构 → 请求模型 → 提取 JSON/工具参数 → 本地解析与必要校验 → 返回对象。
+
+| `method` | 机制 | 约束边界 |
+| --- | --- | --- |
+| `json_schema` | 提供商原生结构化输出 | 需支持该功能及所用 Schema 子集 |
+| `function_calling` | 用工具参数承载结构化数据 | 从工具调用中解析，不代表执行实际业务工具 |
+| `json_mode` | 要求生成合法 JSON | 通常还需在提示词中说明目标 Schema |
+
+`with_structured_output()` 的默认 method 由适配器和版本决定，不存在所有厂商统一的默认值。模型不支持时可能直接报错；**不能假设 LangChain 一定自动回退到“提示词 + JSON 解析”**。
+
+校验可能发生在提供商、本地解析器和业务代码等不同层次。Pydantic 通常在本地构造对象时验证字段；字典结果是否已通过 Schema 校验，则取决于具体适配器与策略。使用模拟服务测试异常输出时，应分别验证各层的行为。
+
+## 4. 保留原始响应
+
+```python
+extractor = model.with_structured_output(
+    CourseInfo,
+    method="function_calling",
+    include_raw=True,
+)
+result = extractor.invoke("一门十章的 LangChain 入门课程。")
+
+print(result["raw"].usage_metadata)
+if result["parsing_error"] is not None:
+    print("解析失败：", result["parsing_error"])
+else:
+    print(result["parsed"])
+```
+
+返回三部分：`raw` 为原始 AIMessage，`parsed` 为结构化结果，`parsing_error` 为解析阶段的异常。保留 raw 有助于查看用量和排错，但不会自动捕获网络、鉴权等所有调用错误。
+
+## 5. 输出解析器
+
+传统方案是给提示词加入格式要求，再通过 `JsonOutputParser` 或 `PydanticOutputParser` 解析模型文本。它仍适合模型缺乏原生能力、处理历史文本或需要特殊解析的情况，但开发者要负责格式修复与失败处理。
+
+选型建议：支持合适结构化接口时优先使用它；简单文本后处理无需过度封装；重要业务结果始终要做语义与业务校验。
+
+## 6. 本章要点
+
+- Schema 不只是字段名，还应表达描述、必填/可空、范围和枚举。
+- Pydantic 对象用属性读取，字典用键读取；`include_raw=True` 还会再包一层结果。
+- 格式有效、类型符合、事实正确是三个不同检查。
+
+### 思考题
+
+1. `Optional[str]` 为什么不等于字段可省略？
+2. `json_mode` 为什么不自动保证完整 Schema？
+3. 返回字典是否意味着没有经过 Schema 校验？
+
+## 7. 参考资料
+
+- [模型结构化输出](https://docs.langchain.com/oss/python/langchain/models#structured-output)
+- [Agent 结构化输出](https://docs.langchain.com/oss/python/langchain/structured-output)
