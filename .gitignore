@@ -26,5 +26,6 @@ pnpm-debug.log*
 .astro
 
 # local working files
+.obsidian/
 work/
 .superpowers/

@@ -1,0 +1,727 @@
+{
+  "schemaVersion": 1,
+  "snapshotDate": "2026-11-12",
+  "sourceCommit": "28297541d0e1163cfb08b41545a2fdd0fa72048e",
+  "repository": "https://github.com/xiaoyao-666-coder/agent_note",
+  "branch": "feature/astro-cactus-blog",
+  "site": "https://xiaoyao-knowledge.pages.dev/",
+  "scope": "Snapshot of canonical content only; content/ and src/content.config.ts remain authoritative.",
+  "hashFormat": "SHA-256 of source text encoded as UTF-8 with LF line endings",
+  "counts": {
+    "notes": 23,
+    "posts": 0,
+    "drafts": 0,
+    "seriesDefinitions": 2,
+    "categoryDefinitions": 2
+  },
+  "series": [
+    {
+      "id": "langchain",
+      "source": "content/series/langchain.md",
+      "metadata": {
+        "title": "LangChain 学习笔记",
+        "description": "从模型接入、消息与工具调用，到智能体、中间件、上下文与记忆，以及 RAG 知识库问答的十章学习路径。",
+        "order": 2
+      }
+    },
+    {
+      "id": "li-hongyi-ai-course",
+      "source": "content/series/li-hongyi-ai-course.md",
+      "metadata": {
+        "title": "李宏毅老师 AI 课程 PPT 学习笔记",
+        "description": "按章节整理李宏毅老师课程中关于基础模型、推理、AI Agent、模型机制和语音模型的重要方法与研究。",
+        "order": 1
+      }
+    }
+  ],
+  "categories": [
+    {
+      "id": "人工智能",
+      "source": "content/categories/人工智能.md",
+      "metadata": {
+        "title": "人工智能",
+        "description": "生成式人工智能、基础模型、AI Agent、推理和多模态系统相关笔记。",
+        "order": 1
+      }
+    },
+    {
+      "id": "工程实践",
+      "source": "content/categories/工程实践.md",
+      "metadata": {
+        "title": "工程实践",
+        "description": "亲自参与的项目、实验、问题排查与交付复盘。",
+        "order": 2
+      }
+    }
+  ],
+  "entries": [
+    {
+      "source": "content/notes/agent-harness-notes.md",
+      "collection": "note",
+      "id": "agent-harness-notes",
+      "path": "/notes/agent-harness-notes/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/agent-harness-notes/",
+      "metadata": {
+        "title": "《御舆：解码 Agent Harness》详细学习笔记",
+        "description": "系统整理 Agent Harness 的对话循环、工具与权限、上下文和记忆、子智能体、MCP、流式架构及生产化设计。",
+        "publishDate": "2026-07-17",
+        "category": "人工智能",
+        "tags": [
+          "Agent Harness",
+          "Claude Code",
+          "MCP",
+          "AI Agent"
+        ]
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "agent harness",
+        "claude code",
+        "mcp",
+        "ai agent"
+      ],
+      "sourceSha256Utf8Lf": "25db12510770b0ce19053b0f6927c0970b8b6b8d5e3415b4d26d496d0cc65bbc"
+    },
+    {
+      "source": "content/notes/ai-agent-course/01-introduction.md",
+      "collection": "note",
+      "id": "ai-agent-course/01-introduction",
+      "path": "/notes/ai-agent-course/01-introduction/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/01-introduction/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：生成式人工智能与基础模型总览",
+        "description": "从自回归生成、Transformer 和 Mamba 到预训练、对齐、推理与 AI Agent 的课程总览。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "生成式人工智能",
+          "基础模型",
+          "Transformer",
+          "AI Agent"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 1
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "生成式人工智能",
+        "基础模型",
+        "transformer",
+        "ai agent"
+      ],
+      "sourceSha256Utf8Lf": "748e10696633fc80992d134f9bf1ea83178019f78d64327ecb4096fa6633521e"
+    },
+    {
+      "source": "content/notes/ai-agent-course/02-pretraining.md",
+      "collection": "note",
+      "id": "ai-agent-course/02-pretraining",
+      "path": "/notes/ai-agent-course/02-pretraining/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/02-pretraining/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：预训练与能力来源",
+        "description": "整理预训练、指令微调、数据质量、合成数据和基础模型能力来源。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "预训练",
+          "指令微调",
+          "数据工程",
+          "基础模型"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 2
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "预训练",
+        "指令微调",
+        "数据工程",
+        "基础模型"
+      ],
+      "sourceSha256Utf8Lf": "012870591938519edf218ef93cb290db9db73e7587a3e3bfbc92d1d228a20997"
+    },
+    {
+      "source": "content/notes/ai-agent-course/03-post-training.md",
+      "collection": "note",
+      "id": "ai-agent-course/03-post-training",
+      "path": "/notes/ai-agent-course/03-post-training/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/03-post-training/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：后训练与持续学习",
+        "description": "整理监督微调、强化学习、灾难性遗忘、回放和安全能力保持方法。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "后训练",
+          "持续学习",
+          "灾难性遗忘",
+          "对齐"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 3
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "后训练",
+        "持续学习",
+        "灾难性遗忘",
+        "对齐"
+      ],
+      "sourceSha256Utf8Lf": "e149ee729e4e4066b01974f20f540461f8663c17878ac4ea2c50f8bd09ec3bd5"
+    },
+    {
+      "source": "content/notes/ai-agent-course/04-reasoning.md",
+      "collection": "note",
+      "id": "ai-agent-course/04-reasoning",
+      "path": "/notes/ai-agent-course/04-reasoning/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/04-reasoning/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：深度推理与搜索",
+        "description": "整理思维链、自洽性、验证器、树搜索、过程奖励和 DeepSeek-R1 推理训练。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "深度推理",
+          "思维链",
+          "搜索",
+          "强化学习"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 4
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "深度推理",
+        "思维链",
+        "搜索",
+        "强化学习"
+      ],
+      "sourceSha256Utf8Lf": "03edaeecdb38c241d22426a269ad3960726dcd37685bdd7d860aafb73231dcd8"
+    },
+    {
+      "source": "content/notes/ai-agent-course/05-efficient-reasoning.md",
+      "collection": "note",
+      "id": "ai-agent-course/05-efficient-reasoning",
+      "path": "/notes/ai-agent-course/05-efficient-reasoning/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/05-efficient-reasoning/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：高效推理与长度控制",
+        "description": "整理过度思考、Chain of Draft、隐式思维链、最短正确轨迹和动态推理预算。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "高效推理",
+          "测试时计算",
+          "思维链",
+          "推理成本"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 5
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "高效推理",
+        "测试时计算",
+        "思维链",
+        "推理成本"
+      ],
+      "sourceSha256Utf8Lf": "aec74561fb5defa9288c4aecdd4827f4cff3a4ba2798f2947a75baa6a8b69c17"
+    },
+    {
+      "source": "content/notes/ai-agent-course/06-reasoning-evaluation.md",
+      "collection": "note",
+      "id": "ai-agent-course/06-reasoning-evaluation",
+      "path": "/notes/ai-agent-course/06-reasoning-evaluation/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/06-reasoning-evaluation/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：推理评估与指标偏差",
+        "description": "整理基准污染、模板记忆、ARC-AGI、Chatbot Arena、成本评估和 Goodhart 定律。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "推理评估",
+          "基准污染",
+          "ARC-AGI",
+          "Chatbot Arena"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 6
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "推理评估",
+        "基准污染",
+        "arc-agi",
+        "chatbot arena"
+      ],
+      "sourceSha256Utf8Lf": "81ebb90f816179892546d5cc8e06c1cbd06f693ba85e5c6b7781d25dcdb7e7d6"
+    },
+    {
+      "source": "content/notes/ai-agent-course/07-ai-agent.md",
+      "collection": "note",
+      "id": "ai-agent-course/07-ai-agent",
+      "path": "/notes/ai-agent-course/07-ai-agent/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/07-ai-agent/",
+      "metadata": {
+        "title": "李宏毅 AI Agent：目标、行动、观察与规划",
+        "description": "整理 AI Agent 的循环、应用、记忆、工具调用、自动构建工具和规划研究。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "AI Agent",
+          "Agent 记忆",
+          "工具调用",
+          "规划"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 7
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "ai agent",
+        "agent 记忆",
+        "工具调用",
+        "规划"
+      ],
+      "sourceSha256Utf8Lf": "2b0fb17bb287b5f1fa00f874666388e52a068ac8f0aacdc344c9e14fc3728605"
+    },
+    {
+      "source": "content/notes/ai-agent-course/08-model-inside.md",
+      "collection": "note",
+      "id": "ai-agent-course/08-model-inside",
+      "path": "/notes/ai-agent-course/08-model-inside/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/08-model-inside/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：模型内部与可解释性",
+        "description": "整理神经元、表示方向、稀疏自编码器、激活补丁、电路和 Patchscope。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "可解释性",
+          "稀疏自编码器",
+          "模型电路",
+          "激活操控"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 8
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "可解释性",
+        "稀疏自编码器",
+        "模型电路",
+        "激活操控"
+      ],
+      "sourceSha256Utf8Lf": "224316bed092b5fb113248c42187f4916aeea9eaf04c4d20527b4dd1e4ef932e"
+    },
+    {
+      "source": "content/notes/ai-agent-course/09-model-editing.md",
+      "collection": "note",
+      "id": "ai-agent-course/09-model-editing",
+      "path": "/notes/ai-agent-course/09-model-editing/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/09-model-editing/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：模型编辑",
+        "description": "整理 IKE、ROME、MEND 等模型编辑方法，以及可靠性、泛化性和局部性评估。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "模型编辑",
+          "ROME",
+          "MEND",
+          "知识更新"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 9
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "模型编辑",
+        "rome",
+        "mend",
+        "知识更新"
+      ],
+      "sourceSha256Utf8Lf": "4bdf6b61110e1db7f4bacf408e0a054817ca72a440870ec386a31fdb8becffc6"
+    },
+    {
+      "source": "content/notes/ai-agent-course/10-model-merging.md",
+      "collection": "note",
+      "id": "ai-agent-course/10-model-merging",
+      "path": "/notes/ai-agent-course/10-model-merging/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/10-model-merging/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：模型合并与任务向量",
+        "description": "整理任务向量、Task Arithmetic、TIES、DARE 和模型能力合并中的参数干扰。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "模型合并",
+          "任务向量",
+          "TIES",
+          "DARE"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 10
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "模型合并",
+        "任务向量",
+        "ties",
+        "dare"
+      ],
+      "sourceSha256Utf8Lf": "2401234965d49017ad41f071ac97c1a1dea9678f894ecd1b1d3caeea7bd8278a"
+    },
+    {
+      "source": "content/notes/ai-agent-course/11-mamba.md",
+      "collection": "note",
+      "id": "ai-agent-course/11-mamba",
+      "path": "/notes/ai-agent-course/11-mamba/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/11-mamba/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：Mamba 与状态空间模型",
+        "description": "整理 Transformer 长序列瓶颈、线性注意力、RetNet、Mamba 和混合架构。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "Mamba",
+          "状态空间模型",
+          "线性注意力",
+          "长序列"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 11
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "mamba",
+        "状态空间模型",
+        "线性注意力",
+        "长序列"
+      ],
+      "sourceSha256Utf8Lf": "0dd58bc04c9bc25723b3999fddc22ec9aee03d793d8d23a7a3812bd24ef2f8b5"
+    },
+    {
+      "source": "content/notes/ai-agent-course/12-speech.md",
+      "collection": "note",
+      "id": "ai-agent-course/12-speech",
+      "path": "/notes/ai-agent-course/12-speech/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/ai-agent-course/12-speech/",
+      "metadata": {
+        "title": "李宏毅 AI 课程：语音基础模型",
+        "description": "整理语音 token、神经 codec、分层生成、文本模型初始化和全双工交互。",
+        "publishDate": "2026-07-24",
+        "category": "人工智能",
+        "tags": [
+          "语音模型",
+          "语音 token",
+          "多模态",
+          "全双工"
+        ],
+        "series": "li-hongyi-ai-course",
+        "seriesOrder": 12
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "语音模型",
+        "语音 token",
+        "多模态",
+        "全双工"
+      ],
+      "sourceSha256Utf8Lf": "dafbd2403da94c417f81c831d2bd4f982d224e1091c8a1dd69cf80e8135cd9a0"
+    },
+    {
+      "source": "content/notes/langchain/01-overview.md",
+      "collection": "note",
+      "id": "langchain/01-overview",
+      "path": "/notes/langchain/01-overview/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/01-overview/",
+      "metadata": {
+        "title": "LangChain：框架概述",
+        "description": "梳理 LangChain 生态、包结构与开发环境，比较 Prompt、Agent、RAG 和微调的适用场景。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "AI Agent"
+        ],
+        "series": "langchain",
+        "seriesOrder": 1
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "ai agent"
+      ],
+      "sourceSha256Utf8Lf": "8f5dde0717f14928d8adc46730d9e7e32a1ec675644990e3f28f3d4a6c0ad21a"
+    },
+    {
+      "source": "content/notes/langchain/02-models.md",
+      "collection": "note",
+      "id": "langchain/02-models",
+      "path": "/notes/langchain/02-models/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/02-models/",
+      "metadata": {
+        "title": "LangChain：模型的创建与调用",
+        "description": "介绍云端与本地模型接入、参数配置，以及同步、流式、批量和异步调用。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "大语言模型",
+          "Ollama"
+        ],
+        "series": "langchain",
+        "seriesOrder": 2
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "大语言模型",
+        "ollama"
+      ],
+      "sourceSha256Utf8Lf": "1fc0ee840af6af5d67e3e22a27fc19392847931ce1047f498fb96ec378721a64"
+    },
+    {
+      "source": "content/notes/langchain/03-langsmith.md",
+      "collection": "note",
+      "id": "langchain/03-langsmith",
+      "path": "/notes/langchain/03-langsmith/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/03-langsmith/",
+      "metadata": {
+        "title": "LangChain：LangSmith 的使用",
+        "description": "从调用追踪与运行分析入手，介绍大模型应用的调试、数据集和实验评测。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "LangSmith",
+          "可观测性"
+        ],
+        "series": "langchain",
+        "seriesOrder": 3
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "langsmith",
+        "可观测性"
+      ],
+      "sourceSha256Utf8Lf": "490113c9d0fb7549d8255264ad1b803b99c4b479566800a826755c09a6084fa1"
+    },
+    {
+      "source": "content/notes/langchain/04-messages-prompts.md",
+      "collection": "note",
+      "id": "langchain/04-messages-prompts",
+      "path": "/notes/langchain/04-messages-prompts/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/04-messages-prompts/",
+      "metadata": {
+        "title": "LangChain：Message 与提示词模板",
+        "description": "理解消息角色、工具响应配对、多轮历史、内容块与提示词模板的组合方式。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "提示词工程"
+        ],
+        "series": "langchain",
+        "seriesOrder": 4
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "提示词工程"
+      ],
+      "sourceSha256Utf8Lf": "2279f81abfa6a16b0dc8a6d163fbb54397de9661f2772121e93dfa044e4edbd2"
+    },
+    {
+      "source": "content/notes/langchain/05-tools.md",
+      "collection": "note",
+      "id": "langchain/05-tools",
+      "path": "/notes/langchain/05-tools/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/05-tools/",
+      "metadata": {
+        "title": "LangChain：Tools 工具调用",
+        "description": "掌握工具定义、参数 Schema、模型工具调用循环与执行控制。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "工具调用",
+          "AI Agent"
+        ],
+        "series": "langchain",
+        "seriesOrder": 5
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "工具调用",
+        "ai agent"
+      ],
+      "sourceSha256Utf8Lf": "077543a2b5941eaa772248b711f4ce8c180c701215d404fdf28ac8aa0544e8db"
+    },
+    {
+      "source": "content/notes/langchain/06-structured-output.md",
+      "collection": "note",
+      "id": "langchain/06-structured-output",
+      "path": "/notes/langchain/06-structured-output/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/06-structured-output/",
+      "metadata": {
+        "title": "LangChain：结构化输出",
+        "description": "使用 Schema 定义模型输出，理解结构化结果的生成、校验和解析方式。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "结构化输出",
+          "Pydantic"
+        ],
+        "series": "langchain",
+        "seriesOrder": 6
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "结构化输出",
+        "pydantic"
+      ],
+      "sourceSha256Utf8Lf": "d64caa208d8a37398a5926ac924638dec94dd5d36ed0e31ff29bc61a2a05ecf0"
+    },
+    {
+      "source": "content/notes/langchain/07-agents.md",
+      "collection": "note",
+      "id": "langchain/07-agents",
+      "path": "/notes/langchain/07-agents/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/07-agents/",
+      "metadata": {
+        "title": "LangChain：智能体",
+        "description": "介绍 Agent 创建、工具循环、结构化结果、错误处理与流式输出。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "AI Agent",
+          "LangGraph"
+        ],
+        "series": "langchain",
+        "seriesOrder": 7
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "ai agent",
+        "langgraph"
+      ],
+      "sourceSha256Utf8Lf": "78d519b00ed377b6c43af445bea276933812528e64cfa45c0965c04fb6879d4b"
+    },
+    {
+      "source": "content/notes/langchain/08-middleware.md",
+      "collection": "note",
+      "id": "langchain/08-middleware",
+      "path": "/notes/langchain/08-middleware/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/08-middleware/",
+      "metadata": {
+        "title": "LangChain：中间件",
+        "description": "通过摘要、人工审核、调用限制、重试和自定义钩子管理 Agent 的运行过程。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "AI Agent",
+          "中间件"
+        ],
+        "series": "langchain",
+        "seriesOrder": 8
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "ai agent",
+        "中间件"
+      ],
+      "sourceSha256Utf8Lf": "a0f82706cb6dff2b94a45d746b433c026b6a0fe786422ab39ac995600a65d2ee"
+    },
+    {
+      "source": "content/notes/langchain/09-context-memory.md",
+      "collection": "note",
+      "id": "langchain/09-context-memory",
+      "path": "/notes/langchain/09-context-memory/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/09-context-memory/",
+      "metadata": {
+        "title": "LangChain：上下文与记忆",
+        "description": "区分 State、检查点、Store 和运行时 Context，理解短期记忆、长期记忆与消息治理。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "LangGraph",
+          "上下文工程",
+          "记忆"
+        ],
+        "series": "langchain",
+        "seriesOrder": 9
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "langgraph",
+        "上下文工程",
+        "记忆"
+      ],
+      "sourceSha256Utf8Lf": "116b824a7dd929af8e3b756569ad0e98bd9254354e6c041ce52c4ae3f084f704"
+    },
+    {
+      "source": "content/notes/langchain/10-rag.md",
+      "collection": "note",
+      "id": "langchain/10-rag",
+      "path": "/notes/langchain/10-rag/",
+      "url": "https://xiaoyao-knowledge.pages.dev/notes/langchain/10-rag/",
+      "metadata": {
+        "title": "LangChain：RAG 检索增强生成",
+        "description": "从文档加载、切分、嵌入和向量检索出发，构建基于 Milvus 的知识库问答。",
+        "publishDate": "2026-10-28",
+        "category": "人工智能",
+        "tags": [
+          "LangChain",
+          "RAG",
+          "向量数据库",
+          "Milvus"
+        ],
+        "series": "langchain",
+        "seriesOrder": 10
+      },
+      "effectiveDraft": false,
+      "effectivePinned": false,
+      "effectiveTags": [
+        "langchain",
+        "rag",
+        "向量数据库",
+        "milvus"
+      ],
+      "sourceSha256Utf8Lf": "362a18cd294f3d3f4e0c2b965a704680da24f320b9414d33dfe03895842ce509"
+    }
+  ]
+}

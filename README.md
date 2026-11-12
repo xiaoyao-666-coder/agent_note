@@ -5,6 +5,7 @@
 - 在线站点：[xiaoyao-knowledge.pages.dev](https://xiaoyao-knowledge.pages.dev/)
 - 统一索引：[在线知识索引](https://xiaoyao-knowledge.pages.dev/knowledge/)
 - GitHub 仓库：[xiaoyao-666-coder/agent_note](https://github.com/xiaoyao-666-coder/agent_note)
+- Muse 重构入口：[源码结构、迁移要求与验收清单](./MUSE-REBUILD.md)
 
 ## 知识地图
 
